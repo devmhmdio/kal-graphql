@@ -33,7 +33,7 @@ export default gql`
   type Mutation {
     addUser(input: InputUser!): userData
     updateUser(id: String, input: InputUser!): userData
-    createConnection(input: GenerateInput!): JSON
+    createConnection(input: GenerateInput!): createConnectionOutput
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
   }
@@ -63,5 +63,10 @@ export default gql`
   type userData {
     status: Status
     data: User
+  }
+
+  type createConnectionOutput {
+    Subject: String
+    Body: String
   }
 `;

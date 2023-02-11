@@ -12,18 +12,21 @@ const openai = new OpenAIApi(configuration);
 export class CreateConnController {
   async generate(inputObject: any, ctx: Context) {
     try {
-      let prompt;
+      let prompt: String;
+      let result;
+      let body;
+      let subject;
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
-      console.log('this is input object', inputObject);
       if (!inputObject.input.prompt) {
-        prompt = await Prompt.find();
+        const findPrompt = await Prompt.find();
+        prompt = findPrompt[0].question
       } else {
         prompt = inputObject.input.prompt;
       }
       const businessReplace = prompt.replace('<Business Description>', inputObject.input.businessKeyword);
-      const clientReplace = prompt.replace('<Client Description>', inputObject.input.clientKeyword);
+      const clientReplace = businessReplace.replace('<Client Description>', inputObject.input.clientKeyword);
       const response = await openai.createCompletion({
         model: 'text-davinci-003',
         prompt: clientReplace,
@@ -32,8 +35,15 @@ export class CreateConnController {
         frequency_penalty: 0,
         presence_penalty: 0,
       });
+      result = response.data.choices[0].text;
+      body = result.split("\n").filter(line => line.trim() !== "").join("\n");
+      let lines = body.split("\n");
+      subject = lines[0].replace('Subject: ', '');
+      lines.shift();
+      const mailBody = lines.toString();
       return {
-        result: response.data.choices[0].text,
+        Subject: subject,
+        Body: mailBody
       };
     } catch (e) {
       console.log(e);
