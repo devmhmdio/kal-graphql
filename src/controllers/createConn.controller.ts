@@ -16,43 +16,53 @@ export class CreateConnController {
       let result;
       let body;
       let subject;
+      let clientReplace;
+      let response;
+      let responseToSend;
+      let responseToSendArray = [];
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
       if (!inputObject.input.prompt) {
         const findPrompt = await Prompt.find();
-        prompt = findPrompt[0].question
+        prompt = findPrompt[0].question;
       } else {
         prompt = inputObject.input.prompt;
       }
       const businessReplace = prompt.replace('<Business Description>', inputObject.input.businessKeyword);
-      const clientReplace = businessReplace.replace('<Client Description>', inputObject.input.clientKeyword);
-      const response = await openai.createCompletion({
-        model: 'text-davinci-003',
-        prompt: clientReplace,
-        max_tokens: 400,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      });
-      result = response.data.choices[0].text;
-      body = result.split("\n").filter(line => line.trim() !== "").join("\n");
-      let lines = body.split("\n");
-      let emailBody = "";
-      lines.forEach(line => {
-        if (line.startsWith("Subject: ")) {
-          subject = line;
-        } else {
-          emailBody += line + "\n";
-        }
-      });
-      subject = subject.replace('Subject: ', '');
-      const responseToSend = {
-        subject: subject,
-        body: emailBody
-      };
-      await Email.create(responseToSend)
-      return responseToSend;
+      for (let i = 0; i <= inputObject.input.clientKeyword.length - 1; i++) {
+        clientReplace = businessReplace.replace('<Client Description>', inputObject.input.clientKeyword[i]);
+        response = await openai.createCompletion({
+          model: 'text-davinci-003',
+          prompt: clientReplace,
+          max_tokens: 400,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        });
+        result = response.data.choices[0].text;
+        body = result
+          .split('\n')
+          .filter((line) => line.trim() !== '')
+          .join('\n');
+        let lines = body.split('\n');
+        let emailBody = '';
+        lines.forEach((line) => {
+          if (line.startsWith('Subject: ')) {
+            subject = line;
+          } else {
+            emailBody += line + '\n';
+          }
+        });
+        subject = subject.replace('Subject: ', '');
+        responseToSend = {
+          subject: subject,
+          body: emailBody,
+        };
+        responseToSendArray.push(responseToSend);
+        await Email.create(responseToSend);
+      }
+      return responseToSendArray;
     } catch (e) {
       console.log(e);
     }
@@ -77,28 +87,21 @@ export class CreateConnController {
         secure: true,
         auth: {
           user: process.env.FROM_EMAIL,
-          pass: process.env.FROM_PASS
-        }
-      });
-      transporter.verify(function (error, success) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Server is ready to take our messages");
-        }
+          pass: process.env.FROM_PASS,
+        },
       });
       const salutations = ['Dear', 'Hey', 'Hello', 'Hey there!'];
       const randomSalutation = salutations[Math.floor(Math.random() * salutations.length)];
-      for (let i=0; i<=inputObject.input.length-1;i++) {
+      for (let i = 0; i <= inputObject.input.length - 1; i++) {
         await transporter.sendMail({
           from: process.env.FROM_EMAIL,
           to: inputObject.input[i].toEmail,
-          subject: email[0].subject,
-          text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + email[0].body
-        })
+          subject: email[i].subject,
+          text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + email[i].body,
+        });
       }
       await Email.deleteMany({});
-      return 'Email sent successfully'
+      return 'Email sent successfully';
     } catch (e) {
       console.log(e);
       throw new Error(`Error sending email`);
