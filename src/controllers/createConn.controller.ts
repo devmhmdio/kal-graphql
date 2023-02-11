@@ -1,8 +1,7 @@
 import { Context } from '../models/context';
-import { buildErrorResponse } from '../utils/buildErrorResponse';
-import { successResponse } from '../utils/successResponse';
 import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
+const Email = require('../models/email');
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -41,10 +40,12 @@ export class CreateConnController {
       subject = lines[0].replace('Subject: ', '');
       lines.shift();
       const mailBody = lines.toString();
-      return {
-        Subject: subject,
-        Body: mailBody
+      const responseToSend = {
+        subject: subject,
+        body: mailBody
       };
+      await Email.create(responseToSend)
+      return responseToSend;
     } catch (e) {
       console.log(e);
     }

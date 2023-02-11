@@ -66,7 +66,7 @@ export default gql`
   }
 
   type createConnectionOutput {
-    Subject: String
-    Body: String
+    subject: String
+    body: String
   }
 `;
