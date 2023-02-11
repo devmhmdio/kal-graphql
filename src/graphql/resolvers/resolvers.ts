@@ -37,6 +37,9 @@ const resolvers: IResolvers = {
     addPrompt: (_, inputObject, ctx: Context) => {
       return createConnController.addPrompt(inputObject, ctx);
     },
+    sendEmail: (_, inputObject) => {
+      return createConnController.sendEmail(inputObject);
+    }
   },
 };
 

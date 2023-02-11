@@ -1,4 +1,3 @@
-import 'graphql-import-node';
 import typesArray from './schemas/typeDefs';
 // import * as rootDefs from './schemas/schema.graphql';
 import { makeExecutableSchema } from 'graphql-tools';

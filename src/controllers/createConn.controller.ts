@@ -2,6 +2,7 @@ import { Context } from '../models/context';
 import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
 const Email = require('../models/email');
+import nodemailer from 'nodemailer';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -37,12 +38,18 @@ export class CreateConnController {
       result = response.data.choices[0].text;
       body = result.split("\n").filter(line => line.trim() !== "").join("\n");
       let lines = body.split("\n");
-      subject = lines[0].replace('Subject: ', '');
-      lines.shift();
-      const mailBody = lines.toString();
+      let emailBody = "";
+      lines.forEach(line => {
+        if (line.startsWith("Subject: ")) {
+          subject = line;
+        } else {
+          emailBody += line + "\n";
+        }
+      });
+      subject = subject.replace('Subject: ', '');
       const responseToSend = {
         subject: subject,
-        body: mailBody
+        body: emailBody
       };
       await Email.create(responseToSend)
       return responseToSend;
@@ -58,6 +65,43 @@ export class CreateConnController {
     } catch (e) {
       console.log(e);
       return 'Question not inserted, please check console for error';
+    }
+  }
+
+  async sendEmail(inputObject: any) {
+    try {
+      const email = await Email.find();
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.FROM_EMAIL,
+          pass: process.env.FROM_PASS
+        }
+      });
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Server is ready to take our messages");
+        }
+      });
+      const salutations = ['Dear', 'Hey', 'Hello', 'Hey there!'];
+      const randomSalutation = salutations[Math.floor(Math.random() * salutations.length)];
+      for (let i=0; i<=inputObject.input.length-1;i++) {
+        await transporter.sendMail({
+          from: process.env.FROM_EMAIL,
+          to: inputObject.input[i].toEmail,
+          subject: email[0].subject,
+          text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + email[0].body
+        })
+      }
+      await Email.deleteMany({});
+      return 'Email sent successfully'
+    } catch (e) {
+      console.log(e);
+      throw new Error(`Error sending email`);
     }
   }
 }

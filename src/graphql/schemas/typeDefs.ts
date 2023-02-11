@@ -36,12 +36,18 @@ export default gql`
     createConnection(input: GenerateInput!): createConnectionOutput
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
+    sendEmail(input: [sendEmail!]!): JSON
   }
 
   input GenerateInput {
     businessKeyword: String!
     clientKeyword: String!
     prompt: String
+  }
+
+  input sendEmail {
+    name: String!
+    toEmail: String!
   }
 
   input InputUser {
