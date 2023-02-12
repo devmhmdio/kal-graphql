@@ -26,6 +26,9 @@ const server = new ApolloServer({
 
 app.use('*', cors());
 app.use(compression());
+app.get('/', (req, res) => {
+  res.send('<a href="/graphql">Click here</a> to go to app')
+});
 server.applyMiddleware({ app, path: '/graphql' });
 
 const httpServer = createServer(app);
