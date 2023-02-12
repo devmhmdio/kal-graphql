@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "npm run build && node dist/server.js",
-    "build": "tsc",
+    "build": "tsc -p . && ncp src/graphql/schemas/ dist/graphql/schemas",
     "start:dev": "npm run build:dev",
     "build:dev": "nodemon src/server.ts --exec ts-node src/server.ts -e ts,graphql",
     "test": "jest --config ./jest.config.js --coverage --watchAll --testPathPattern=test/unit-test --detectOpenHandles"
