@@ -60,7 +60,6 @@ export class CreateConnController {
           body: emailBody,
         };
         responseToSendArray.push(responseToSend);
-        await Email.create(responseToSend);
       }
       return responseToSendArray;
     } catch (e) {
@@ -106,5 +105,9 @@ export class CreateConnController {
       console.log(e);
       throw new Error(`Error sending email`);
     }
+  }
+
+  async saveChanges(inputObject) {
+    inputObject.input.forEach(async (email) => await Email.create(email))
   }
 }

@@ -37,6 +37,7 @@ export default gql`
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
+    saveChanges(input: JSON!): JSON
   }
 
   input GenerateInput {

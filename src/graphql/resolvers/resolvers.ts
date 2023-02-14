@@ -39,6 +39,9 @@ const resolvers: IResolvers = {
     },
     sendEmail: (_, inputObject) => {
       return createConnController.sendEmail(inputObject);
+    },
+    saveChanges: (_, inputObject, ctx: Context) => {
+      return createConnController.saveChanges(inputObject);
     }
   },
 };
