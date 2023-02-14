@@ -50,16 +50,17 @@ export class CreateConnController {
         lines.forEach((line) => {
           if (line.startsWith('Subject: ')) {
             subject = line;
+            subject = subject.replace('Subject: ', '');
           } else {
             emailBody += line + '\n';
           }
         });
-        subject = subject.replace('Subject: ', '');
         responseToSend = {
           subject: subject,
           body: emailBody,
         };
         responseToSendArray.push(responseToSend);
+        await Email.create(responseToSend)
       }
       return responseToSendArray;
     } catch (e) {
@@ -107,7 +108,8 @@ export class CreateConnController {
     }
   }
 
-  async saveChanges(inputObject) {
-    inputObject.input.forEach(async (email) => await Email.create(email))
-  }
+  // async saveChanges(inputObject) {
+  //   console.log(inputObject)
+  //   inputObject.input.forEach(async (email) => await Email.create(email))
+  // }
 }
