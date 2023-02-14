@@ -108,8 +108,7 @@ export class CreateConnController {
     }
   }
 
-  // async saveChanges(inputObject) {
-  //   console.log(inputObject)
-  //   inputObject.input.forEach(async (email) => await Email.create(email))
-  // }
+  async saveChanges(inputObject) {
+    console.log(inputObject)
+  }
 }
