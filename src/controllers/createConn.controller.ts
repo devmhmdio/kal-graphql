@@ -80,7 +80,14 @@ export class CreateConnController {
 
   async sendEmail(inputObject: any) {
     try {
-      const email = await Email.find();
+      const { subject, body, name, toEmail } = inputObject.input[0];
+      const allEmails = {
+        subject,
+        body,
+        name,
+        email: toEmail
+      };
+      console.log('line 91', allEmails)
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -96,8 +103,8 @@ export class CreateConnController {
         await transporter.sendMail({
           from: process.env.FROM_EMAIL,
           to: inputObject.input[i].toEmail,
-          subject: email[i].subject,
-          text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + email[i].body,
+          subject: allEmails.subject,
+          text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + allEmails.body,
         });
       }
       await Email.deleteMany({});
@@ -110,5 +117,10 @@ export class CreateConnController {
 
   async saveChanges(inputObject) {
     console.log(inputObject)
+  }
+
+  async getEmailDataFromDb() {
+    const allEmails = await Email.find({});
+    return allEmails;
   }
 }

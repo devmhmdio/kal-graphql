@@ -15,7 +15,14 @@ export default gql`
     getUsers(contactType: String): getUsersData
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
+    getEmails: [emailsDataOutput]!
   }
+
+  type emailsDataOutput {
+    subject: String!
+    body: String!
+  }
+
   type getUsersData {
     status: Status
     data: [User]
@@ -47,6 +54,8 @@ export default gql`
   }
 
   input sendEmail {
+    subject: String!
+    body: String!
     name: String!
     toEmail: String!
   }

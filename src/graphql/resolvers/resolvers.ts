@@ -20,6 +20,9 @@ const resolvers: IResolvers = {
     findByUserId: (_: void, args: any, ctx: Context, _info: GraphQLResolveInfo) => {
       return usersController.findByUserId(args, ctx);
     },
+    getEmails: (_: void, args: any, ctx: Context, _info: GraphQLResolveInfo) => {
+      return createConnController.getEmailDataFromDb();
+    }
   },
   Mutation: {
     addUser: (_, inputObject, ctx: Context) => {
