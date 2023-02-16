@@ -15,7 +15,7 @@ export class CreateConnController {
       let prompt: String;
       let result;
       let body;
-      let subject;
+      let subject = 'Subject';
       let clientReplace;
       let response;
       let responseToSend;
@@ -56,7 +56,7 @@ export class CreateConnController {
           }
         });
         responseToSend = {
-          subject: subject,
+          subject,
           body: emailBody,
         };
         responseToSendArray.push(responseToSend);
