@@ -2,6 +2,7 @@ import { Context } from '../models/context';
 import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
 const Email = require('../models/email');
+const NameEmailId = require('../models/namesAndEmails')
 import nodemailer from 'nodemailer';
 
 const configuration = new Configuration({
@@ -20,6 +21,8 @@ export class CreateConnController {
       let response;
       let responseToSend;
       let responseToSendArray = [];
+      let emailId;
+      let name;
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
@@ -55,9 +58,13 @@ export class CreateConnController {
             emailBody += line + '\n';
           }
         });
+        name = inputObject.input.name[i]
+        emailId = inputObject.input.emailId[i]
         responseToSend = {
           subject,
           body: emailBody,
+          name,
+          emailId
         };
         responseToSendArray.push(responseToSend);
         await Email.create(responseToSend)

@@ -21,6 +21,8 @@ export default gql`
   type emailsDataOutput {
     subject: String!
     body: String!
+    name: String
+    emailId: String
   }
 
   type getUsersData {
@@ -51,6 +53,8 @@ export default gql`
     businessKeyword: String!
     clientKeyword: [String!]!
     prompt: String
+    name: [String]
+    emailId: [String]
   }
 
   input sendEmail {

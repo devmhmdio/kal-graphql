@@ -10,6 +10,12 @@ const EmailSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+    },
+    emailId: {
+      type: String,
+    }
   },
   {
     timestamps: true,
