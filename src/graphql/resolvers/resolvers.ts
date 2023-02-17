@@ -45,6 +45,9 @@ const resolvers: IResolvers = {
     },
     saveChanges: (_, inputObject, ctx: Context) => {
       return createConnController.saveChanges(inputObject);
+    },
+    deleteAllResponsesFromDB: (_, inputObject, ctx: Context) => {
+      return createConnController.deleteAllResponsesFromDB();
     }
   },
 };

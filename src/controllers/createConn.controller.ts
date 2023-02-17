@@ -129,4 +129,9 @@ export class CreateConnController {
     const allEmails = await Email.find({});
     return allEmails;
   }
+
+  async deleteAllResponsesFromDB() {
+    await Email.deleteMany({});
+    return 'All Responses Deleted';
+  }
 }

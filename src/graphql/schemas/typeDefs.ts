@@ -47,6 +47,7 @@ export default gql`
     addPrompt(question: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
     saveChanges(input: JSON!): JSON
+    deleteAllResponsesFromDB: String
   }
 
   input GenerateInput {
