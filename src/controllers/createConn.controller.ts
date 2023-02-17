@@ -58,8 +58,10 @@ export class CreateConnController {
             emailBody += line + '\n';
           }
         });
-        name = inputObject.input.name[i]
-        emailId = inputObject.input.emailId[i]
+        if (inputObject.input.name && inputObject.input.emailId) {
+          name = inputObject.input.name[i]
+          emailId = inputObject.input.emailId[i]
+        }
         responseToSend = {
           subject,
           body: emailBody,
