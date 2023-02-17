@@ -45,6 +45,7 @@ export default gql`
     createConnection(input: GenerateInput!): [createConnectionOutput]
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
+    updatePrompt(question: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB: deleteUsersData

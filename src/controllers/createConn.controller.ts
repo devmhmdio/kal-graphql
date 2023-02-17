@@ -77,11 +77,23 @@ export class CreateConnController {
 
   async addPrompt(inputObject: any, ctx: Context) {
     try {
+      await Prompt.deleteMany({});
       await Prompt.create(inputObject);
       return 'Question Inserted';
     } catch (e) {
       console.log(e);
       return 'Question not inserted, please check console for error';
+    }
+  }
+
+  async updatePrompt(inputObject: any, ctx: Context) {
+    try {
+      const getIdPrompt = await Prompt.find({});
+      await Prompt.findOneAndUpdate({ _id: getIdPrompt[0]._id }, inputObject);
+      return 'Question Updated';
+    } catch (e) {
+      console.log(e);
+      return 'Question not updated, please check console for error';
     }
   }
 
