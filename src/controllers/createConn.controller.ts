@@ -3,6 +3,7 @@ import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
 const Email = require('../models/email');
 import nodemailer from 'nodemailer';
+import { successResponse } from '../utils/successResponse';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -131,7 +132,7 @@ export class CreateConnController {
   }
 
   async deleteAllResponsesFromDB() {
-    await Email.deleteMany({});
-    return 'All Responses Deleted';
+    const result = await Email.deleteMany({});
+    return successResponse(result, 'deleted');
   }
 }
