@@ -2,7 +2,6 @@ import { Context } from '../models/context';
 import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
 const Email = require('../models/email');
-const NameEmailId = require('../models/namesAndEmails')
 import nodemailer from 'nodemailer';
 
 const configuration = new Configuration({
