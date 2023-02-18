@@ -16,6 +16,7 @@ export default gql`
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
     getEmails: [emailsDataOutput]!
+    getPrompt: JSON
   }
 
   type emailsDataOutput {

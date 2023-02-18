@@ -22,6 +22,9 @@ const resolvers: IResolvers = {
     },
     getEmails: (_: void, args: any, ctx: Context, _info: GraphQLResolveInfo) => {
       return createConnController.getEmailDataFromDb();
+    },
+    getPrompt: () => {
+      return createConnController.getPrompt();
     }
   },
   Mutation: {

@@ -88,6 +88,11 @@ export class CreateConnController {
     }
   }
 
+  async getPrompt() {
+    const prompt = await Prompt.find({});
+    return prompt[0].question;
+  }
+
   async updatePrompt(inputObject: any, ctx: Context) {
     try {
       const getIdPrompt = await Prompt.find({});
