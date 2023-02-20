@@ -5,9 +5,6 @@ export default gql`
   type User {
     email: String
     name: String
-    provider: String
-    photoUrl: String
-    contactType: String
     phone: String
   }
 
@@ -70,9 +67,7 @@ export default gql`
   input InputUser {
     email: String
     name: String
-    provider: String
-    photoUrl: String
-    contactType: String
+    password: String
     phone: String
   }
 
