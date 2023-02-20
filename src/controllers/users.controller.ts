@@ -12,9 +12,10 @@ export class UsersController {
       return buildErrorResponse(error);
     }
   }
-  async getUsers() {
+  async getUsers(args) {
+    console.log('this is args', args)
     try {
-      const result = await Users.find();
+      const result = await Users.findOne({ email: args.input.email, password: args.input.password }, 'email password').exec();
       console.log(result);
       return successResponse(result, 'fetch');
     } catch (error) {

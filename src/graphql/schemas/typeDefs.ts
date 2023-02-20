@@ -6,14 +6,20 @@ export default gql`
     email: String
     name: String
     phone: String
+    password: String
   }
 
   type Query {
-    getUsers(contactType: String): getUsersData
+    getUsers(input: getUserInput): getUsersData
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
     getEmails: [emailsDataOutput]!
     getPrompt: JSON
+  }
+
+  input getUserInput {
+    email: String
+    password: String
   }
 
   type emailsDataOutput {
@@ -25,7 +31,7 @@ export default gql`
 
   type getUsersData {
     status: Status
-    data: [User]
+    data: User
   }
 
   type findByUserIdData {
