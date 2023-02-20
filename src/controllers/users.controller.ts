@@ -2,6 +2,7 @@ import { Context } from '../models/context';
 import { buildErrorResponse } from '../utils/buildErrorResponse';
 import { successResponse } from '../utils/successResponse';
 const Users = require('../models/users');
+import jwt from 'jsonwebtoken';
 
 export class UsersController {
   async addUser(inputObject: any, ctx: Context) {
@@ -13,11 +14,15 @@ export class UsersController {
     }
   }
   async getUsers(args) {
-    console.log('this is args', args)
     try {
-      const result = await Users.findOne({ email: args.input.email, password: args.input.password }, 'email password').exec();
-      console.log(result);
-      return successResponse(result, 'fetch');
+      const result = await Users.findOne({ email: args.input.email, password: args.input.password });
+      if (!result) {
+        throw new Error('Invalid email or password')
+      }
+
+      const token = jwt.sign({ userId: result._id, email: result.email, name: result.name }, 'asdfghjkL007');
+
+      return {result, token};
     } catch (error) {
       return buildErrorResponse(error);
     }
@@ -50,6 +55,16 @@ export class UsersController {
       return successResponse(result, 'deleted');
     } catch (error) {
       return buildErrorResponse(error);
+    }
+  }
+
+  async returnTokenData(inputObject: any) {
+    try {
+      const token = inputObject.token;
+      const decodedToken = jwt.verify(token, "asdfghjkL007")
+      return decodedToken
+    } catch (e) {
+      console.error(e)
     }
   }
 }

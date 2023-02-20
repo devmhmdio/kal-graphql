@@ -10,7 +10,7 @@ export default gql`
   }
 
   type Query {
-    getUsers(input: getUserInput): getUsersData
+    getUsers(input: getUserInput): JSON
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
     getEmails: [emailsDataOutput]!
@@ -30,7 +30,7 @@ export default gql`
   }
 
   type getUsersData {
-    status: Status
+    token: String
     data: User
   }
 
@@ -53,6 +53,7 @@ export default gql`
     sendEmail(input: [sendEmail!]!): JSON
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB: deleteUsersData
+    returnToken(token: String): JSON
   }
 
   input GenerateInput {
