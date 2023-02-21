@@ -106,21 +106,21 @@ export class CreateConnController {
 
   async sendEmail(inputObject: any) {
     try {
-      const { subject, body, name, toEmail } = inputObject.input[0];
+      const { subject, body, name, toEmail, fromEmail, app_password } = inputObject.input[0];
+      console.log('here', subject, body, name, toEmail, fromEmail, app_password)
       const allEmails = {
         subject,
         body,
         name,
         email: toEmail
       };
-      console.log('line 91', allEmails)
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
         secure: true,
         auth: {
-          user: process.env.FROM_EMAIL,
-          pass: process.env.FROM_PASS,
+          user: fromEmail,
+          pass: app_password,
         },
       });
       const salutations = ['Dear', 'Hey', 'Hello', 'Hey there!'];

@@ -69,6 +69,8 @@ export default gql`
     body: String!
     name: String!
     toEmail: String!
+    fromEmail: String!
+    app_password: String!
   }
 
   input InputUser {
