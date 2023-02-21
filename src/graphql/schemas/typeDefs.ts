@@ -76,6 +76,7 @@ export default gql`
     name: String
     password: String
     phone: String
+    app_password: String
   }
 
   type Status {
