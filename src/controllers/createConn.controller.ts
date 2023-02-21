@@ -107,7 +107,6 @@ export class CreateConnController {
   async sendEmail(inputObject: any) {
     try {
       const { subject, body, name, toEmail, fromEmail, app_password } = inputObject.input[0];
-      console.log('here', subject, body, name, toEmail, fromEmail, app_password)
       const allEmails = {
         subject,
         body,
