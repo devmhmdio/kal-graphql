@@ -81,6 +81,9 @@ export class CreateConnController {
         if (emailBody.includes("[Sender Firm]")) {
           emailBody = emailBody.replaceAll("[Sender Firm]", company)
         }
+        if (emailBody.includes("<Business>")) {
+          emailBody = emailBody.replaceAll("<Business>", company)
+        }
         if (emailBody.includes("<Name>")) {
           emailBody = emailBody.replaceAll("<Name>", name)
         }
@@ -91,10 +94,13 @@ export class CreateConnController {
           emailBody = emailBody.replaceAll("<Your Name>", name)
         }
         if (emailBody.includes("<Sender's name>")) {
-          emailBody = emailBody.replaceAll("<Sender's mame>", name)
+          emailBody = emailBody.replaceAll("<Sender's name>", name)
         }
         if (emailBody.includes("[Your name here]")) {
           emailBody = emailBody.replaceAll("[Your name here]", name)
+        }
+        if (emailBody.includes("[Sender]")) {
+          emailBody = emailBody.replaceAll("[Sender]", name)
         }
         if (emailBody.includes("[Sender's Firm]")) {
           emailBody = emailBody.replaceAll("[Sender's Firm]", company)
@@ -105,14 +111,29 @@ export class CreateConnController {
         if (emailBody.includes("[Sender's business]")) {
           emailBody = emailBody.replaceAll("[Sender's business]", company)
         }
-        if (subject.includes("<Sender Company Name>")) {
-          subject = subject.replaceAll("<Sender Company Name>", company)
+        if (emailBody.includes("<Sender Company Name>")) {
+          emailBody = emailBody.replaceAll("<Sender Company Name>", company)
         }
-        if (subject.includes("<Sender Company>")) {
-          subject = subject.replaceAll("<Sender Company>", company)
+        if (emailBody.includes("<Sender Company>")) {
+          emailBody = emailBody.replaceAll("<Sender Company>", company)
         }
-        if (subject.includes("<Company Name>")) {
-          subject = subject.replaceAll("<Company Name>", company)
+        if (emailBody.includes("<Company Name>")) {
+          emailBody = emailBody.replaceAll("<Company Name>", company)
+        }
+        if (emailBody.includes("<Your Company>")) {
+          emailBody = emailBody.replaceAll("<Your Company>", company)
+        }
+        if (emailBody.includes("<Name of firm>")) {
+          emailBody = emailBody.replaceAll("<Name of firm>", company)
+        }
+        if (emailBody.includes("<name of firm>")) {
+          emailBody = emailBody.replaceAll("<name of firm>", company)
+        }
+        if (emailBody.includes("[Sender's Business]")) {
+          emailBody = emailBody.replaceAll("[Sender's Business]", company)
+        }
+        if (emailBody.includes("[Company]")) {
+          emailBody = emailBody.replaceAll("[Company]", company)
         }
         responseToSend = {
           subject,
