@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema(
     app_password: {
       type: String,
       required: true,
+    },
+    company: {
+      type: String,
+      required: true
     }
   },
   {
