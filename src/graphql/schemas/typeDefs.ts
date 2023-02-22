@@ -62,8 +62,9 @@ export default gql`
     businessKeyword: String!
     clientKeyword: [String!]!
     prompt: String
-    name: [String]
+    name: String
     emailId: [String]
+    company: String
   }
 
   input sendEmail {

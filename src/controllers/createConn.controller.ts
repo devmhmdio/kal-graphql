@@ -23,6 +23,7 @@ export class CreateConnController {
       let responseToSendArray = [];
       let emailId;
       let name;
+      let company;
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
@@ -61,6 +62,51 @@ export class CreateConnController {
         if (inputObject.input.name && inputObject.input.emailId) {
           name = inputObject.input.name[i]
           emailId = inputObject.input.emailId[i]
+        }
+        if (emailBody.includes("<Sender Company Name>")) {
+          emailBody = emailBody.replaceAll("<Sender Company Name>", company)
+        }
+        if (emailBody.includes("<Sender Company>")) {
+          emailBody = emailBody.replaceAll("<Sender Company>", company)
+        }
+        if (emailBody.includes("[Your Company Name]")) {
+          emailBody = emailBody.replaceAll("[Your Company Name]", company)
+        }
+        if (emailBody.includes("<Sender Name>")) {
+          emailBody = emailBody.replaceAll("<Sender Name>", name)
+        }
+        if (emailBody.includes("<Name>")) {
+          emailBody = emailBody.replaceAll("<Name>", name)
+        }
+        if (emailBody.includes("[Your Name]")) {
+          emailBody = emailBody.replaceAll("[Your Name]", name)
+        }
+        if (emailBody.includes("<Your Name>")) {
+          emailBody = emailBody.replaceAll("<Your Name>", name)
+        }
+        if (emailBody.includes("<Sender's name>")) {
+          emailBody = emailBody.replaceAll("<Sender's mame>", name)
+        }
+        if (emailBody.includes("[Your name here]")) {
+          emailBody = emailBody.replaceAll("[Your name here]", name)
+        }
+        if (emailBody.includes("[Sender's Firm]")) {
+          emailBody = emailBody.replaceAll("[Sender's Firm]", company)
+        }
+        if (emailBody.includes("<Sender's Firm>")) {
+          emailBody = emailBody.replaceAll("<Sender's Firm>", company)
+        }
+        if (emailBody.includes("[Sender's business]")) {
+          emailBody = emailBody.replaceAll("[Sender's business]", company)
+        }
+        if (subject.includes("<Sender Company Name>")) {
+          subject = subject.replaceAll("<Sender Company Name>", company)
+        }
+        if (subject.includes("<Sender Company>")) {
+          subject = subject.replaceAll("<Sender Company>", company)
+        }
+        if (subject.includes("<Company Name>")) {
+          subject = subject.replaceAll("<Company Name>", company)
         }
         responseToSend = {
           subject,
