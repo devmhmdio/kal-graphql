@@ -75,6 +75,12 @@ export class CreateConnController {
         if (emailBody.includes("<Sender Name>")) {
           emailBody = emailBody.replaceAll("<Sender Name>", name)
         }
+        if (emailBody.includes("[Sender Name]")) {
+          emailBody = emailBody.replaceAll("[Sender Name]", name)
+        }
+        if (emailBody.includes("[Sender Firm]")) {
+          emailBody = emailBody.replaceAll("[Sender Firm]", company)
+        }
         if (emailBody.includes("<Name>")) {
           emailBody = emailBody.replaceAll("<Name>", name)
         }
