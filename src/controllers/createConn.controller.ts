@@ -61,17 +61,17 @@ export class CreateConnController {
           }
         });
         if (inputObject.input.name && inputObject.input.emailId) {
-          name = inputObject.input.name[i]
-          emailId = inputObject.input.emailId[i]
+          name = inputObject.input.name[i];
+          emailId = inputObject.input.emailId[i];
         }
         responseToSend = {
           subject,
           body: emailBody,
           name,
-          emailId
+          emailId,
         };
         responseToSendArray.push(responseToSend);
-        await Email.create(responseToSend)
+        await Email.create(responseToSend);
       }
       return responseToSendArray;
     } catch (e) {
@@ -113,7 +113,7 @@ export class CreateConnController {
         subject,
         body,
         name,
-        email: toEmail
+        email: toEmail,
       };
       const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -143,7 +143,7 @@ export class CreateConnController {
   }
 
   async saveChanges(inputObject) {
-    console.log(inputObject)
+    console.log(inputObject);
   }
 
   async getEmailDataFromDb() {
@@ -165,24 +165,33 @@ export class CreateConnController {
     await page.type('#username', 'mohammedrafique23@gmail.com');
     await page.type('#password', 'Mhmd@66426633');
     await page.click('button[type="submit"]');
+
+    // Wait for the page to load and navigate to the LinkedIn search page
+    await page.waitForNavigation();
+    const downButtonSelector = 'button[.msg-overlay-bubble-header__control]';
+    await page.waitForSelector(downButtonSelector);
+    await page.click(downButtonSelector);
+    await page.goto('https://www.linkedin.com/search/results/people/');
+
+    // Enter the email address of the person you want to search for
+    // await page.type('input[aria-label="Click to start a search"]', "khadijadhariwala11@gmail.com");
+    const searchButtonSelector = 'button[aria-label="Click to start a search"]';
+    await page.waitForSelector(searchButtonSelector);
+    await page.click(searchButtonSelector);
+    await page.type('input[aria-label="Search"]', "khadijadhariwala11@gmail.com");
+    // await page.click('[type="submit"]');
+    await page.keyboard.press('Enter');
+
+    // Wait for the page to load and extract the URL of the person's LinkedIn profile
     await page.waitForNavigation();
 
-    // Navigate to the invitation page
-    await page.goto('https://www.linkedin.com/mynetwork/invitation-manager/');
+    // const profileUrl = await page.evaluate(() => {
+    //   return document.querySelector('.search-result__result-link').href;
+    // });
 
-    // Click on the "Connect" button
-    await page.click('.mn-invitation-list button[data-control-name="invite"]');
+    // Construct a personalized message to send to the person
+    const message = `Hi [Name], I came across your LinkedIn profile and would like to connect with you. [Add personalized message here]`;
 
-    // Type the email address and custom message
-    await page.type('#email', 'khadijadhariwala11@gmail.com');
-    await page.type('#custom-message', 'Hey, I would like to connect with you on LinkedIn.');
-
-    // Send the invitation
-    await page.click('.artdeco-modal__footer button[type="submit"]');
-
-    // Wait for the invitation to be sent
-    await page.waitForSelector('.mn-invitation-list button[data-control-name="withdraw"]');
-
-    await browser.close();
+    // await browser.close();
   }
 }
