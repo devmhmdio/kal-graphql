@@ -19,6 +19,7 @@ export class UsersController {
       if (!result) {
         throw new Error('Invalid email or password')
       }
+      
 
       const token = jwt.sign({ userId: result._id, email: result.email, name: result.name, phone: result.phone, app_password: result.app_password, company: result.company }, 'asdfghjkL007', { expiresIn: '1h' });
 
