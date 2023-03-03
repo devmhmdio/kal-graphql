@@ -56,6 +56,7 @@ export default gql`
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB: deleteUsersData
     returnToken(token: String): JSON
+    linkedInMsg: JSON
   }
 
   input GenerateInput {

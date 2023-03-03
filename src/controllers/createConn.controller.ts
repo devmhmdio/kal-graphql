@@ -4,6 +4,7 @@ const Prompt = require('../models/prompt');
 const Email = require('../models/email');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
+import puppeteer from 'puppeteer';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -153,5 +154,35 @@ export class CreateConnController {
   async deleteAllResponsesFromDB() {
     const result = await Email.deleteMany({});
     return successResponse(result, 'deleted');
+  }
+
+  async linkedInMsg() {
+    const browser = await puppeteer.launch({ headless: false });
+    const page = await browser.newPage();
+    await page.goto('https://www.linkedin.com/login');
+
+    // Login to LinkedIn
+    await page.type('#username', 'mohammedrafique23@gmail.com');
+    await page.type('#password', 'Mhmd@66426633');
+    await page.click('button[type="submit"]');
+    await page.waitForNavigation();
+
+    // Navigate to the invitation page
+    await page.goto('https://www.linkedin.com/mynetwork/invitation-manager/');
+
+    // Click on the "Connect" button
+    await page.click('.mn-invitation-list button[data-control-name="invite"]');
+
+    // Type the email address and custom message
+    await page.type('#email', 'khadijadhariwala11@gmail.com');
+    await page.type('#custom-message', 'Hey, I would like to connect with you on LinkedIn.');
+
+    // Send the invitation
+    await page.click('.artdeco-modal__footer button[type="submit"]');
+
+    // Wait for the invitation to be sent
+    await page.waitForSelector('.mn-invitation-list button[data-control-name="withdraw"]');
+
+    await browser.close();
   }
 }

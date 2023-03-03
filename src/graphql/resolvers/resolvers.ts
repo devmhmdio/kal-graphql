@@ -57,6 +57,9 @@ const resolvers: IResolvers = {
     },
     returnToken: (_, inputObject, ctx: Context) => {
       return usersController.returnTokenData(inputObject);
+    },
+    linkedInMsg: () => {
+      return createConnController.linkedInMsg();
     }
   },
 };
