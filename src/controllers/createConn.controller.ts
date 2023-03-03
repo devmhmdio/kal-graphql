@@ -157,6 +157,7 @@ export class CreateConnController {
   }
 
   async linkedInMsg() {
+    let profileUrl = "https://www.linkedin.com/in/khadija-dh-b02428120/";
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.goto('https://www.linkedin.com/login');
@@ -168,22 +169,15 @@ export class CreateConnController {
 
     // Wait for the page to load and navigate to the LinkedIn search page
     await page.waitForNavigation();
-    const downButtonSelector = 'button[.msg-overlay-bubble-header__control]';
-    await page.waitForSelector(downButtonSelector);
-    await page.click(downButtonSelector);
-    await page.goto('https://www.linkedin.com/search/results/people/');
+    await page.goto(profileUrl);
 
     // Enter the email address of the person you want to search for
-    // await page.type('input[aria-label="Click to start a search"]', "khadijadhariwala11@gmail.com");
-    const searchButtonSelector = 'button[aria-label="Click to start a search"]';
-    await page.waitForSelector(searchButtonSelector);
-    await page.click(searchButtonSelector);
-    await page.type('input[aria-label="Search"]', "khadijadhariwala11@gmail.com");
-    // await page.click('[type="submit"]');
-    await page.keyboard.press('Enter');
+    const messageButtonSelector = 'a.message-anywhere-button';
+    await page.waitForSelector(messageButtonSelector);
+    await page.click(messageButtonSelector);
 
     // Wait for the page to load and extract the URL of the person's LinkedIn profile
-    await page.waitForNavigation();
+    // await page.waitForNavigation();
 
     // const profileUrl = await page.evaluate(() => {
     //   return document.querySelector('.search-result__result-link').href;
@@ -192,6 +186,7 @@ export class CreateConnController {
     // Construct a personalized message to send to the person
     const message = `Hi [Name], I came across your LinkedIn profile and would like to connect with you. [Add personalized message here]`;
 
-    // await browser.close();
+    await browser.close();
+    return "Success";
   }
 }
