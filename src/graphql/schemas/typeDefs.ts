@@ -27,6 +27,7 @@ export default gql`
   type emailsDataOutput {
     subject: String!
     body: String!
+    csvName: String
     name: String
     emailId: String
   }

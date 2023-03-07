@@ -61,14 +61,16 @@ export class CreateConnController {
             emailBody += line + '\n';
           }
         });
-        if (inputObject.input.name && inputObject.input.emailId) {
+        if (inputObject.input.name || inputObject.input.emailId || inputObject.input.csvName) {
           name = inputObject.input.name[i];
+          csvName = inputObject.input.csvName[i];
           emailId = inputObject.input.emailId[i];
         }
         responseToSend = {
           subject,
           body: emailBody,
           name,
+          csvName,
           emailId,
         };
         responseToSendArray.push(responseToSend);
@@ -149,6 +151,7 @@ export class CreateConnController {
 
   async getEmailDataFromDb() {
     const allEmails = await Email.find({});
+    console.log('all Emails',allEmails);
     return allEmails;
   }
 

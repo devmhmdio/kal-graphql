@@ -13,6 +13,9 @@ const EmailSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    csvName: {
+      type: String,
+    },
     emailId: {
       type: String,
     }
