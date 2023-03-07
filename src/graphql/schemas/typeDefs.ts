@@ -66,6 +66,7 @@ export default gql`
     name: String
     emailId: [String]
     company: String
+    csvName: [String]
   }
 
   input sendEmail {

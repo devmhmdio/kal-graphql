@@ -25,6 +25,7 @@ export class CreateConnController {
       let emailId;
       let name;
       let company;
+      let csvName;
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
