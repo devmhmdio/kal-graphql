@@ -9,6 +9,7 @@ export default gql`
     password: String
     app_password: String
     company: String
+    position: String
   }
 
   type Query {
@@ -86,6 +87,7 @@ export default gql`
     phone: String
     app_password: String
     company: String
+    position: String
   }
 
   type Status {
