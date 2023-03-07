@@ -61,8 +61,8 @@ export class CreateConnController {
             emailBody += line + '\n';
           }
         });
-        if (inputObject.input.name || inputObject.input.emailId || inputObject.input.csvName) {
-          name = inputObject.input.name[i];
+        if (inputObject.input.emailId && inputObject.input.csvName) {
+          // name = inputObject.input.name[i];
           csvName = inputObject.input.csvName[i];
           emailId = inputObject.input.emailId[i];
         }
