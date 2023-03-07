@@ -62,7 +62,6 @@ export class CreateConnController {
           }
         });
         if (inputObject.input.emailId && inputObject.input.csvName) {
-          // name = inputObject.input.name[i];
           csvName = inputObject.input.csvName[i];
           emailId = inputObject.input.emailId[i];
         }
@@ -151,7 +150,6 @@ export class CreateConnController {
 
   async getEmailDataFromDb() {
     const allEmails = await Email.find({});
-    console.log('all Emails',allEmails);
     return allEmails;
   }
 
