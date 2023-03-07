@@ -34,7 +34,7 @@ export class CreateConnController {
       } else {
         prompt = inputObject.input.prompt;
       }
-      const businessReplace = prompt.replace('<Business Description>', inputObject.input.businessKeyword);
+      const businessReplace = prompt.replaceAll('<Business Description>', inputObject.input.businessKeyword);
       for (let i = 0; i <= inputObject.input.clientKeyword.length - 1; i++) {
         clientReplace = businessReplace.replace('<Client Description>', inputObject.input.clientKeyword[i]);
         response = await openai.createCompletion({
