@@ -67,6 +67,7 @@ export class CreateConnController {
         if (inputObject.input.emailId) {
           emailId = inputObject.input.emailId[i];
         }
+        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '')
         responseToSend = {
           subject,
           body: emailBody,
@@ -165,6 +166,7 @@ export class CreateConnController {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     await page.goto('https://www.linkedin.com/login');
+    await page.setViewport({width: 1080, height: 1024});
 
     // Login to LinkedIn
     await page.type('#username', 'mohammedrafique23@gmail.com');
@@ -174,23 +176,26 @@ export class CreateConnController {
     // Wait for the page to load and navigate to the LinkedIn search page
     await page.waitForNavigation();
     await page.goto(profileUrl);
+    await page.waitForTimeout(2000)
 
-    // Enter the email address of the person you want to search for
-    const messageButtonSelector = 'a.message-anywhere-button';
-    await page.waitForSelector(messageButtonSelector);
-    await page.click(messageButtonSelector);
+    // Click on the message button
+    // const messageButtonSelector = 'div.entry-point';
+    // await page.waitForSelector(messageButtonSelector);
+    // await page.click(messageButtonSelector);
+    await page.waitForSelector('.artdeco-button__text');
+    await page.click('.artdeco-button__text');
 
-    // Wait for the page to load and extract the URL of the person's LinkedIn profile
-    // await page.waitForNavigation();
 
-    // const profileUrl = await page.evaluate(() => {
-    //   return document.querySelector('.search-result__result-link').href;
-    // });
+    await page.waitForSelector('.msg-form__subject-input');
+    await page.type('.msg-form__subject-input', 'YOUR_SUBJECT');
+    await page.type('.msg-form__contenteditable', 'YOUR_MESSAGE_BODY');
+    await page.click('.msg-form__send-button');
+
 
     // Construct a personalized message to send to the person
     const message = `Hi [Name], I came across your LinkedIn profile and would like to connect with you. [Add personalized message here]`;
 
-    await browser.close();
+    // await browser.close();
     return "Success";
   }
 }
