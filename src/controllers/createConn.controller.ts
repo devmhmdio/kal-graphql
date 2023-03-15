@@ -67,7 +67,8 @@ export class CreateConnController {
         if (inputObject.input.emailId) {
           emailId = inputObject.input.emailId[i];
         }
-        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '')
+        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '');
+        if (emailBody.includes("Dear <name>,")) emailBody = emailBody.replace("Dear <name>,", '');
         responseToSend = {
           subject,
           body: emailBody,
