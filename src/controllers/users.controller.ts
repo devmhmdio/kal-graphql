@@ -3,6 +3,8 @@ import { buildErrorResponse } from '../utils/buildErrorResponse';
 import { successResponse } from '../utils/successResponse';
 const Users = require('../models/users');
 import jwt from 'jsonwebtoken';
+import { sendResetPasswordEmail } from '../utils/email';
+import { generateResetToken } from '../utils/resetToken';
 
 export class UsersController {
   async addUser(inputObject: any, ctx: Context) {
@@ -27,11 +29,28 @@ export class UsersController {
   }
   async updateUser(inputObject: any, ctx: Context) {
     try {
-      const result = await Users.findOneAndUpdate({ _id: inputObject.id }, inputObject.input);
+      const result = await Users.findOneAndUpdate({ email: inputObject.email }, inputObject.input);
       if (result) {
         return successResponse(result, 'updated');
       }
       return successResponse(result, 'notUpdated');
+    } catch (error) {
+      return buildErrorResponse(error);
+    }
+  }
+
+  async resetPassword(inputObject: any) {
+    try {
+      const user = await Users.findOne({ email: inputObject.email });
+      if (!user) {
+        return buildErrorResponse('User not found');
+      }
+      const resetToken = generateResetToken();
+      user.resetToken = resetToken;
+      user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
+      await user.save();
+      const resetUrl = `https://app.traifecta.com/reset-password/${resetToken}`;
+      return sendResetPasswordEmail(inputObject.email, resetUrl);
     } catch (error) {
       return buildErrorResponse(error);
     }

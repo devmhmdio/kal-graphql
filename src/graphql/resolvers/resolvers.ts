@@ -60,6 +60,9 @@ const resolvers: IResolvers = {
     },
     linkedInMsg: () => {
       return createConnController.linkedInMsg();
+    },
+    resetPassword: (_, inputObject, ctx: Context) => {
+      return usersController.resetPassword(inputObject);
     }
   },
 };
