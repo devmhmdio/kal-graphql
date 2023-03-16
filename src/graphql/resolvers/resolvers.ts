@@ -63,6 +63,9 @@ const resolvers: IResolvers = {
     },
     sendResetPasswordEmail: (_, inputObject, ctx: Context) => {
       return usersController.sendResetPasswordEmail(inputObject);
+    },
+    resetPassword: (_, inputObject) => {
+      return usersController.resetPasswordUser(inputObject);
     }
   },
 };

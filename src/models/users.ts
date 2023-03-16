@@ -1,6 +1,23 @@
-import mongoose = require('mongoose');
+import { Document, model, Model, Schema } from 'mongoose';
+import crypto from 'crypto';
 
-const UserSchema = new mongoose.Schema(
+export interface IUserDocument extends Document {
+  email: string;
+  name: string;
+  photoUrl: string;
+  provider: string;
+  contactType: string;
+  phone: string;
+  password: string;
+  app_password: string;
+  company: string;
+  position: string;
+  resetToken: string | null;
+  resetTokenExpiration: Date | null;
+  returnToken: () => string;
+}
+
+const UserSchema: Schema<IUserDocument> = new Schema(
   {
     email: {
       type: String,
@@ -38,13 +55,29 @@ const UserSchema = new mongoose.Schema(
     position: {
       type: String,
       required: true
-    }
+    },
+    resetToken: {
+      type: String,
+      default: null,
+    },
+    resetTokenExpiration: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model('User', UserSchema);
+UserSchema.methods.returnToken = function (): string {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetTokenExpiration = new Date(Date.now() + 3600000); // Token expires in 1 hour
+  this.resetToken = resetToken;
+  this.resetTokenExpiration = resetTokenExpiration;
+  return resetToken;
+};
+
+module.exports = model<IUserDocument>('User', UserSchema);
 contactType: String;
 phone: String;

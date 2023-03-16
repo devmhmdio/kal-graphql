@@ -49,11 +49,35 @@ export class UsersController {
       user.resetToken = resetToken;
       user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
       await user.save();
-      const resetUrl = `https://app.traifecta.com/reset-password/${resetToken}`;
+      const resetUrl = `http://localhost:3000/reset-password?${resetToken}`;
+      // const resetUrl = `https://app.traifecta.com/reset-password/?resetToken=${resetToken}`;
       sendResetPasswordEmail(inputObject.email, resetUrl);
       return "Mail sent";
     } catch (error) {
       return buildErrorResponse(error);
+    }
+  }
+
+  async resetPasswordUser(inputObject: any) {
+    try {
+      console.log('inputobject', inputObject)
+      const resetToken = inputObject.input.token;
+      const password = inputObject.input.password;
+      console.log('line 65', resetToken);
+      console.log('line 66', password);
+
+      const user = await Users.findOne({ resetToken });
+      console.log('this is user', user)
+      if (!user) {
+        return "Invalid reset token";
+      }
+      // Update user password
+      user.password = password;
+      user.resetToken = null;
+      await user.save();
+      return "Password reset successful";
+    } catch (e) {
+      return buildErrorResponse(e)
     }
   }
 
