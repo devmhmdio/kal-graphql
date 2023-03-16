@@ -39,7 +39,7 @@ export class UsersController {
     }
   }
 
-  async resetPassword(inputObject: any) {
+  async sendResetPasswordEmail(inputObject: any) {
     try {
       const user = await Users.findOne({ email: inputObject.email });
       if (!user) {
