@@ -40,6 +40,9 @@ const resolvers: IResolvers = {
     createConnection: (_, inputObject, ctx: Context) => {
       return createConnController.generate(inputObject, ctx);
     },
+    createConnectionForMessage: (_, inputObject, ctx: Context) => {
+      return createConnController.generateForMessage(inputObject, ctx);
+    },
     addPrompt: (_, inputObject, ctx: Context) => {
       return createConnController.addPrompt(inputObject, ctx);
     },
@@ -48,6 +51,9 @@ const resolvers: IResolvers = {
     },
     sendEmail: (_, inputObject) => {
       return createConnController.sendEmail(inputObject);
+    },
+    sendMessage: (_, inputObject) => {
+      return createConnController.sendMessage(inputObject);
     },
     saveChanges: (_, inputObject, ctx: Context) => {
       return createConnController.saveChanges(inputObject);

@@ -18,6 +18,9 @@ const EmailSchema = new mongoose.Schema(
     },
     emailId: {
       type: String,
+    },
+    number: {
+      type: String,
     }
   },
   {

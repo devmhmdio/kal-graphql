@@ -5,6 +5,10 @@ const Email = require('../models/email');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
 import puppeteer from 'puppeteer';
+const twilio = require('twilio')(
+  process.env.TWILIO_SID,
+  process.env.TWILIO_TOKEN
+);
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -85,6 +89,80 @@ export class CreateConnController {
     }
   }
 
+  async generateForMessage(inputObject: any, ctx: Context) {
+    console.log('this is inpput object', inputObject);
+    try {
+      let prompt: String;
+      let result;
+      let body;
+      let subject = 'Subject';
+      let clientReplace;
+      let response;
+      let responseToSend;
+      let responseToSendArray = [];
+      let name;
+      let company;
+      let csvName;
+      let number
+      if (!configuration.apiKey) {
+        throw new Error('Api key not found');
+      }
+      if (!inputObject.input.prompt) {
+        const findPrompt = await Prompt.find();
+        prompt = findPrompt[0].question;
+      } else {
+        prompt = inputObject.input.prompt;
+      }
+      const businessReplace = prompt.replaceAll('<Business Description>', inputObject.input.businessKeyword);
+      for (let i = 0; i <= inputObject.input.clientKeyword.length - 1; i++) {
+        clientReplace = businessReplace.replace('<Client Description>', inputObject.input.clientKeyword[i]);
+        response = await openai.createCompletion({
+          model: 'text-davinci-003',
+          prompt: clientReplace,
+          max_tokens: 400,
+          top_p: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+        });
+        result = response.data.choices[0].text;
+        body = result
+          .split('\n')
+          .filter((line) => line.trim() !== '')
+          .join('\n');
+        let lines = body.split('\n');
+        let emailBody = '';
+        lines.forEach((line) => {
+          if (line.startsWith('Subject: ')) {
+            subject = line;
+            subject = subject.replace('Subject: ', '');
+          } else {
+            emailBody += line + '\n';
+          }
+        });
+        if (inputObject.input.csvName) {
+          csvName = inputObject.input.csvName[i];
+        }
+        if (inputObject.input.number) {
+          number = inputObject.input.number[i];
+        }
+        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '');
+        if (emailBody.includes("Dear <name>,")) emailBody = emailBody.replace("Dear <name>,", '');
+        responseToSend = {
+          subject,
+          body: emailBody,
+          name,
+          csvName,
+          number,
+        };
+        responseToSendArray.push(responseToSend);
+        await Email.create(responseToSend);
+      }
+      return responseToSendArray;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async addPrompt(inputObject: any, ctx: Context) {
     try {
       await Prompt.deleteMany({});
@@ -145,6 +223,40 @@ export class CreateConnController {
     } catch (e) {
       console.log(e);
       throw new Error(`Error sending email`);
+    }
+  }
+
+  async sendMessage (inputObject: any) {
+    console.log('this is input object', inputObject.input[0]);
+    try {
+      const { subject, body, name, number } = inputObject.input[0];
+      const allEmails = {
+        subject,
+        body,
+        name,
+        number,
+      };
+
+      const salutations = ['Dear', 'Hey', 'Hello', 'Hey there!'];
+      const randomSalutation = salutations[Math.floor(Math.random() * salutations.length)];
+
+      twilio.messages.create({
+        to: number,
+        from: process.env.TWILIO_NUMBER,
+        body: "\n" + "Subject: " + allEmails.subject + "\n" + "Body: " + randomSalutation + "\n" + allEmails.body
+      }).then(async (message) => {
+        // await Email.deleteMany({});
+        console.log(message.sid);
+      }).catch((e) => {
+        console.log(e);
+        throw new Error(`Error sending message`)
+      });
+
+      return 'Message sent successfully';
+
+    } catch (e) {
+      console.log(e);
+      throw new Error(e)
     }
   }
 

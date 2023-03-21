@@ -31,6 +31,7 @@ export default gql`
     csvName: String
     name: String
     emailId: String
+    number: String
   }
 
   type getUsersData {
@@ -58,10 +59,12 @@ export default gql`
     sendResetPasswordEmail(email: String!): JSON
     resetPassword(input: resetPassword): JSON
     createConnection(input: GenerateInput!): [createConnectionOutput]
+    createConnectionForMessage(input: GenerateInputMessage!): [createConnectionOutput]
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
     updatePrompt(question: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
+    sendMessage(input: [sendMessage!]!): JSON
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB: deleteUsersData
     returnToken(token: String): JSON
@@ -78,6 +81,16 @@ export default gql`
     csvName: [String]
   }
 
+  input GenerateInputMessage {
+    businessKeyword: String!
+    clientKeyword: [String!]!
+    prompt: String
+    name: String
+    number: [String]
+    company: String
+    csvName: [String]
+  }
+
   input sendEmail {
     subject: String!
     body: String!
@@ -85,6 +98,13 @@ export default gql`
     toEmail: String!
     fromEmail: String!
     app_password: String!
+  }
+
+  input sendMessage {
+    subject: String!
+    body: String!
+    name: String!
+    number: String!
   }
 
   input InputUser {
