@@ -25,6 +25,9 @@ const resolvers: IResolvers = {
     },
     getPrompt: () => {
       return createConnController.getPrompt();
+    },
+    getMessagePrompt: () => {
+      return createConnController.getMessagePrompt();
     }
   },
   Mutation: {
@@ -46,8 +49,14 @@ const resolvers: IResolvers = {
     addPrompt: (_, inputObject, ctx: Context) => {
       return createConnController.addPrompt(inputObject, ctx);
     },
+    addMessagePrompt: (_, inputObject, ctx: Context) => {
+      return createConnController.addMessagePrompt(inputObject, ctx);
+    },
     updatePrompt: (_, inputObject, ctx: Context) => {
       return createConnController.updatePrompt(inputObject, ctx);
+    },
+    updateMessagePrompt: (_, inputObject, ctx: Context) => {
+      return createConnController.updateMessagePrompt(inputObject, ctx);
     },
     sendEmail: (_, inputObject) => {
       return createConnController.sendEmail(inputObject);

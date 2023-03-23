@@ -1,6 +1,7 @@
 import { Context } from '../models/context';
 import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
+const MessagePrompt = require('../models/mobilePrompt');
 const Email = require('../models/email');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
@@ -174,8 +175,24 @@ export class CreateConnController {
     }
   }
 
+  async addMessagePrompt(inputObject: any, ctx: Context) {
+    try {
+      await MessagePrompt.deleteMany({});
+      await MessagePrompt.create(inputObject);
+      return 'Question Inserted';
+    } catch (e) {
+      console.log(e);
+      return 'Question not inserted, please check console for error';
+    }
+  }
+
   async getPrompt() {
     const prompt = await Prompt.find({});
+    return prompt[0].question;
+  }
+
+  async getMessagePrompt() {
+    const prompt = await MessagePrompt.find({});
     return prompt[0].question;
   }
 
@@ -183,6 +200,18 @@ export class CreateConnController {
     try {
       const getIdPrompt = await Prompt.find({});
       await Prompt.findOneAndUpdate({ _id: getIdPrompt[0]._id }, inputObject);
+      return 'Question Updated';
+    } catch (e) {
+      console.log(e);
+      return 'Question not updated, please check console for error';
+    }
+  }
+
+  async updateMessagePrompt(inputObject: any, ctx: Context) {
+    try {
+      const getIdPrompt = await MessagePrompt.find({});
+      console.log('this is prompt', getIdPrompt)
+      await MessagePrompt.findOneAndUpdate({ _id: getIdPrompt[0]._id }, inputObject);
       return 'Question Updated';
     } catch (e) {
       console.log(e);

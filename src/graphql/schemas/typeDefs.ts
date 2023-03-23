@@ -18,6 +18,7 @@ export default gql`
     token(email: String!): String!
     getEmails: [emailsDataOutput]!
     getPrompt: JSON
+    getMessagePrompt: JSON
   }
 
   input getUserInput {
@@ -62,7 +63,9 @@ export default gql`
     createConnectionForMessage(input: GenerateInputMessage!): [createConnectionOutput]
     deleteUser(id: String): deleteUsersData
     addPrompt(question: String!): JSON
+    addMessagePrompt(question: String!): JSON
     updatePrompt(question: String!): JSON
+    updateMessagePrompt(question: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
     sendMessage(input: [sendMessage!]!): JSON
     saveChanges(input: JSON!): JSON
