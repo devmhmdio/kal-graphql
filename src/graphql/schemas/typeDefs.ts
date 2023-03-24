@@ -16,7 +16,7 @@ export default gql`
     getUsers(input: getUserInput): JSON
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
-    getEmails: [emailsDataOutput]!
+    getEmails(loggedInEmail: String!): [emailsDataOutput]!
     getPrompt: JSON
     getMessagePrompt: JSON
   }
@@ -69,7 +69,7 @@ export default gql`
     sendEmail(input: [sendEmail!]!): JSON
     sendMessage(input: [sendMessage!]!): JSON
     saveChanges(input: JSON!): JSON
-    deleteAllResponsesFromDB: deleteUsersData
+    deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
     linkedInMsg: JSON
   }
@@ -82,6 +82,7 @@ export default gql`
     emailId: [String]
     company: String
     csvName: [String]
+    emailLoggedInUser: String!
   }
 
   input GenerateInputMessage {
@@ -92,6 +93,7 @@ export default gql`
     number: [String]
     company: String
     csvName: [String]
+    emailLoggedInUser: String!
   }
 
   input sendEmail {

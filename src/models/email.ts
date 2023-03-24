@@ -21,6 +21,9 @@ const EmailSchema = new mongoose.Schema(
     },
     number: {
       type: String,
+    },
+    emailLoggedInUser: {
+      type: String,
     }
   },
   {

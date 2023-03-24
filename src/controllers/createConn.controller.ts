@@ -80,6 +80,7 @@ export class CreateConnController {
           name,
           csvName,
           emailId,
+          emailLoggedInUser: inputObject.input.emailLoggedInUser,
         };
         responseToSendArray.push(responseToSend);
         await Email.create(responseToSend);
@@ -154,6 +155,7 @@ export class CreateConnController {
           name,
           csvName,
           number,
+          emailLoggedInUser: inputObject.input.emailLoggedInUser,
         };
         responseToSendArray.push(responseToSend);
         await Email.create(responseToSend);
@@ -293,13 +295,13 @@ export class CreateConnController {
     console.log(inputObject);
   }
 
-  async getEmailDataFromDb() {
-    const allEmails = await Email.find({});
+  async getEmailDataFromDb(args: any) {
+    const allEmails = await Email.find({ emailLoggedInUser: args.loggedInEmail });
     return allEmails;
   }
 
-  async deleteAllResponsesFromDB() {
-    const result = await Email.deleteMany({});
+  async deleteAllResponsesFromDB(inputObject) {
+    const result = await Email.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
     return successResponse(result, 'deleted');
   }
 

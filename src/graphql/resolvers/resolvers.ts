@@ -21,7 +21,7 @@ const resolvers: IResolvers = {
       return usersController.findByUserId(args, ctx);
     },
     getEmails: (_: void, args: any, ctx: Context, _info: GraphQLResolveInfo) => {
-      return createConnController.getEmailDataFromDb();
+      return createConnController.getEmailDataFromDb(args);
     },
     getPrompt: () => {
       return createConnController.getPrompt();
@@ -68,7 +68,7 @@ const resolvers: IResolvers = {
       return createConnController.saveChanges(inputObject);
     },
     deleteAllResponsesFromDB: (_, inputObject, ctx: Context) => {
-      return createConnController.deleteAllResponsesFromDB();
+      return createConnController.deleteAllResponsesFromDB(inputObject);
     },
     returnToken: (_, inputObject, ctx: Context) => {
       return usersController.returnTokenData(inputObject);
