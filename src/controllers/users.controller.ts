@@ -50,7 +50,7 @@ export class UsersController {
       user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
       await user.save();
       // const resetUrl = `http://localhost:3000/reset-password?${resetToken}`;
-      const resetUrl = `https://app.traifecta.com/reset-password?${resetToken}`;
+      const resetUrl = `http://app.traifecta.com/reset-password?${resetToken}`;
       sendResetPasswordEmail(inputObject.email, resetUrl);
       return "Mail sent";
     } catch (error) {
