@@ -60,14 +60,10 @@ export class UsersController {
 
   async resetPasswordUser(inputObject: any) {
     try {
-      console.log('inputobject', inputObject)
       const resetToken = inputObject.input.token;
       const password = inputObject.input.password;
-      console.log('line 65', resetToken);
-      console.log('line 66', password);
 
       const user = await Users.findOne({ resetToken });
-      console.log('this is user', user)
       if (!user) {
         return "Invalid reset token";
       }
@@ -93,7 +89,6 @@ export class UsersController {
   async findByUserId(inputObject: any, ctx: Context) {
     try {
       const result = await Users.findById(inputObject.id);
-      console.log(result);
       return successResponse(result, 'deleted');
     } catch (error) {
       return buildErrorResponse(error);

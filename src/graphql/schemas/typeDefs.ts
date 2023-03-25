@@ -17,8 +17,8 @@ export default gql`
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
     getEmails(loggedInEmail: String!): [emailsDataOutput]!
-    getPrompt: JSON
-    getMessagePrompt: JSON
+    getPrompt(email: String!): JSON
+    getMessagePrompt(email: String!): JSON
   }
 
   input getUserInput {
@@ -62,10 +62,10 @@ export default gql`
     createConnection(input: GenerateInput!): [createConnectionOutput]
     createConnectionForMessage(input: GenerateInputMessage!): [createConnectionOutput]
     deleteUser(id: String): deleteUsersData
-    addPrompt(question: String!): JSON
-    addMessagePrompt(question: String!): JSON
-    updatePrompt(question: String!): JSON
-    updateMessagePrompt(question: String!): JSON
+    addPrompt(question: String!, email: String!): JSON
+    addMessagePrompt(question: String!, email: String!): JSON
+    updatePrompt(question: String!, email: String!): JSON
+    updateMessagePrompt(question: String!, email: String!): JSON
     sendEmail(input: [sendEmail!]!): JSON
     sendMessage(input: [sendMessage!]!): JSON
     saveChanges(input: JSON!): JSON

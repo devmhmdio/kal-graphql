@@ -92,7 +92,6 @@ export class CreateConnController {
   }
 
   async generateForMessage(inputObject: any, ctx: Context) {
-    console.log('this is inpput object', inputObject);
     try {
       let prompt: String;
       let result;
@@ -168,55 +167,50 @@ export class CreateConnController {
 
   async addPrompt(inputObject: any, ctx: Context) {
     try {
-      await Prompt.deleteMany({});
+      await Prompt.deleteOne({ email: inputObject.email });
       await Prompt.create(inputObject);
       return 'Question Inserted';
     } catch (e) {
-      console.log(e);
       return 'Question not inserted, please check console for error';
     }
   }
 
   async addMessagePrompt(inputObject: any, ctx: Context) {
     try {
-      await MessagePrompt.deleteMany({});
+      await MessagePrompt.deleteOne({ email: inputObject.email });
       await MessagePrompt.create(inputObject);
       return 'Question Inserted';
     } catch (e) {
-      console.log(e);
       return 'Question not inserted, please check console for error';
     }
   }
 
-  async getPrompt() {
-    const prompt = await Prompt.find({});
+  async getPrompt({ email }) {
+    const prompt = await Prompt.find({ email });
     return prompt[0].question;
   }
 
-  async getMessagePrompt() {
-    const prompt = await MessagePrompt.find({});
+  async getMessagePrompt({ email }) {
+    const prompt = await MessagePrompt.find({ email });
     return prompt[0].question;
   }
 
   async updatePrompt(inputObject: any, ctx: Context) {
     try {
-      const getIdPrompt = await Prompt.find({});
-      await Prompt.findOneAndUpdate({ _id: getIdPrompt[0]._id }, inputObject);
+      const getIdPrompt = await Prompt.findOne({ email: inputObject.email });
+      await Prompt.findOneAndUpdate({ _id: getIdPrompt._id }, inputObject);
       return 'Question Updated';
     } catch (e) {
-      console.log(e);
       return 'Question not updated, please check console for error';
     }
   }
 
   async updateMessagePrompt(inputObject: any, ctx: Context) {
     try {
-      const getIdPrompt = await MessagePrompt.find({});
-      console.log('this is prompt', getIdPrompt)
+      const getIdPrompt = await MessagePrompt.findOne({ email: inputObject.email });
       await MessagePrompt.findOneAndUpdate({ _id: getIdPrompt[0]._id }, inputObject);
       return 'Question Updated';
     } catch (e) {
-      console.log(e);
       return 'Question not updated, please check console for error';
     }
   }
@@ -252,13 +246,11 @@ export class CreateConnController {
       await Email.deleteMany({});
       return 'Email sent successfully';
     } catch (e) {
-      console.log(e);
       throw new Error(`Error sending email`);
     }
   }
 
   async sendMessage (inputObject: any) {
-    console.log('this is input object', inputObject.input[0]);
     try {
       const { subject, body, name, number } = inputObject.input[0];
       const allEmails = {
@@ -279,14 +271,12 @@ export class CreateConnController {
         // await Email.deleteMany({});
         console.log(message.sid);
       }).catch((e) => {
-        console.log(e);
         throw new Error(`Error sending message`)
       });
 
       return 'Message sent successfully';
 
     } catch (e) {
-      console.log(e);
       throw new Error(e)
     }
   }

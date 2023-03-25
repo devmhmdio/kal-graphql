@@ -5,6 +5,9 @@ const PromptSchema = new mongoose.Schema(
     question: {
       type: String,
     },
+    email: {
+      type: String,
+    },
   },
   {
     timestamps: true,
