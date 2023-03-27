@@ -15,7 +15,7 @@ export class UsersController {
       const question = `Write a professional concise e-mail which is targeted to a potential recipient who's quite an influential and important person in that company. Tell how the sender can help the client, and ask for a meeting schedule if interested. The description of the sender's business/services is given by following keyword/description: <Business Description> The recipient name: <name> recipient's business is related to <Client Description> Identify and sell on three best selling points based on possible issues faced by clients in terms of a <Business Description>. The sender's name is <Sender's Name> and position is <Sender Position> in the company and the sender is sending email on the behalf of the company and not as an individual. Include a Subject line. Do not include or write a salutation. Write it in proper paragraph form. Leave a line after each point and the 3rd point too. Also, leave a line after a paragraph ends and before writing the sender's name.`;
       const smsQuestion = `Write a short SMS message requesting a quick phone call with [Name], to follow up on my recent email. The call is fairly urgent and you would like it to take place tomorrow. Please suggest morning or afternoon for the call.`;
       await Prompt.create({ question, email });
-      await MessagePrompt.create({ smsQuestion, email });
+      await MessagePrompt.create({ question: smsQuestion, email });
       const result = await Users.create(inputObject.input);
       return successResponse(result, 'created');
     } catch (error) {
