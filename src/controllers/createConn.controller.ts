@@ -292,6 +292,11 @@ export class CreateConnController {
     return allEmails;
   }
 
+  async getMsgDataFromDb(args: any) {
+    const allMsgs = await Message.find({ emailLoggedInUser: args.loggedInEmail });
+    return allMsgs;
+  }
+
   async deleteAllResponsesFromDB(inputObject) {
     const result = await Email.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
     return successResponse(result, 'deleted');

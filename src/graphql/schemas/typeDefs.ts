@@ -17,6 +17,7 @@ export default gql`
     findByUserId(id: String!): findByUserIdData
     token(email: String!): String!
     getEmails(loggedInEmail: String!): [emailsDataOutput]!
+    getMsgs(loggedInEmail: String!): [msgsDataOutput]!
     getPrompt(email: String!): JSON
     getMessagePrompt(email: String!): JSON
   }
@@ -32,6 +33,13 @@ export default gql`
     csvName: String
     name: String
     emailId: String
+    number: String
+  }
+
+  type msgsDataOutput {
+    body: String!
+    csvName: String
+    name: String
     number: String
   }
 
