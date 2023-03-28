@@ -254,9 +254,8 @@ export class CreateConnController {
 
   async sendMessage (inputObject: any) {
     try {
-      const { subject, body, name, number } = inputObject.input[0];
+      const { body, name, number } = inputObject.input[0];
       const allEmails = {
-        subject,
         body,
         name,
         number,
@@ -268,9 +267,9 @@ export class CreateConnController {
       twilio.messages.create({
         to: number,
         from: process.env.TWILIO_NUMBER,
-        body: "\n" + "Subject: " + allEmails.subject + "\n" + "Body: " + randomSalutation + "\n" + allEmails.body
+        body: randomSalutation + "\n" + allEmails.body
       }).then(async (message) => {
-        // await Email.deleteMany({});
+        await Message.deleteMany({});
         console.log(message.sid);
       }).catch((e) => {
         throw new Error(`Error sending message`)
