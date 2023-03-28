@@ -106,7 +106,6 @@ export default gql`
   }
 
   input sendMessage {
-    subject: String!
     body: String!
     name: String!
     number: String!
