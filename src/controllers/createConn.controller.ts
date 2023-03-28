@@ -3,6 +3,7 @@ import { Configuration, OpenAIApi } from 'openai';
 const Prompt = require('../models/prompt');
 const MessagePrompt = require('../models/mobilePrompt');
 const Email = require('../models/email');
+const Message = require('../models/messages');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
 import puppeteer from 'puppeteer';
@@ -110,7 +111,7 @@ export class CreateConnController {
         throw new Error('Api key not found');
       }
       if (!inputObject.input.prompt) {
-        const findPrompt = await Prompt.find();
+        const findPrompt = await MessagePrompt.find();
         prompt = findPrompt[0].question;
       } else {
         prompt = inputObject.input.prompt;
@@ -151,7 +152,6 @@ export class CreateConnController {
         if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '');
         if (emailBody.includes("Dear <name>,")) emailBody = emailBody.replace("Dear <name>,", '');
         responseToSend = {
-          subject,
           body: emailBody,
           name,
           csvName,
@@ -159,7 +159,7 @@ export class CreateConnController {
           emailLoggedInUser: inputObject.input.emailLoggedInUser,
         };
         responseToSendArray.push(responseToSend);
-        await Email.create(responseToSend);
+        await Message.create(responseToSend);
       }
       return responseToSendArray;
     } catch (e) {
