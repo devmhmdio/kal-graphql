@@ -133,9 +133,10 @@ export class CreateConnController {
         let lines = body.split('\n');
         let emailBody = '';
         lines.forEach((line) => {
-          if (line.startsWith('Subject: ')) {
+          if (line.startsWith('Subject: ') || line.startsWith('Subject Line: ')) {
             subject = line;
             subject = subject.replace('Subject: ', '');
+            subject = subject.replace('Subject Line: ', '');
           } else {
             emailBody += line + '\n';
           }
