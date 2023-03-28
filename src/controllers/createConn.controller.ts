@@ -298,7 +298,8 @@ export class CreateConnController {
 
   async deleteAllResponsesFromDB(inputObject) {
     const result = await Email.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
-    return successResponse(result, 'deleted');
+    const msgResult = await Message.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
+    return successResponse({result, msgResult}, 'deleted');
   }
 
   async linkedInMsg() {
