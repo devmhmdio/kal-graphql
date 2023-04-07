@@ -64,7 +64,7 @@ export default gql`
 
   type Mutation {
     addUser(input: InputUser!): userData
-    updateUser(email: String, input: InputUser!): userData
+    updateUser(email: String, input: InputUser): userData
     sendResetPasswordEmail(email: String!): JSON
     resetPassword(input: resetPassword): JSON
     createConnection(input: GenerateInput!): [createConnectionOutput]

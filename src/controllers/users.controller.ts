@@ -36,7 +36,14 @@ export class UsersController {
   }
   async updateUser(inputObject: any, ctx: Context) {
     try {
-      const result = await Users.findOneAndUpdate({ email: inputObject.email }, inputObject.input);
+      for (const key in inputObject.input) {
+        if (inputObject.input[key] === '') {
+          delete inputObject.input[key];
+        }
+      }
+      const email = inputObject.input.email;
+      delete inputObject.input.email;
+      const result = await Users.findOneAndUpdate({ email }, inputObject.input);
       if (result) {
         return successResponse(result, 'updated');
       }
