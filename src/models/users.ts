@@ -64,6 +64,10 @@ const UserSchema: Schema<IUserDocument> = new Schema(
       type: Date,
       default: null,
     },
+    role: {
+      type: String,
+      default: 'member',
+    }
   },
   {
     timestamps: true,

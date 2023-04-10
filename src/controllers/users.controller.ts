@@ -118,4 +118,18 @@ export class UsersController {
       console.error(e)
     }
   }
+
+  async getAllUsers({ id }: any) {
+    try {
+      const getCurrentUser = await Users.findOne({ _id: id });
+      if (!getCurrentUser) 'Cannot find any such user'
+      if (getCurrentUser.role === 'super admin') {
+        const users = await Users.find({});
+        return users;
+      }
+      return 'Unauthorised access';
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 }

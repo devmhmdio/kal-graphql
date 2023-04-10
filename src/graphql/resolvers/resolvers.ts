@@ -84,7 +84,10 @@ const resolvers: IResolvers = {
     },
     resetPassword: (_, inputObject) => {
       return usersController.resetPasswordUser(inputObject);
-    }
+    },
+    getAllUsers: (_, inputObject, ctx: Context) => {
+      return usersController.getAllUsers(inputObject);
+    },
   },
 };
 

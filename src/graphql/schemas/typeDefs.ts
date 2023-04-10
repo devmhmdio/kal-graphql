@@ -80,6 +80,7 @@ export default gql`
     deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
     linkedInMsg: JSON
+    getAllUsers(id: String): JSON
   }
 
   input GenerateInput {
