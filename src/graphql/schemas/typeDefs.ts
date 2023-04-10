@@ -62,6 +62,16 @@ export default gql`
     token: String!
   }
 
+  type allUsers {
+    name: String
+    email: String
+    phone: String
+    company: String
+    position: String
+    role: String
+    createdAt: String
+  }
+
   type Mutation {
     addUser(input: InputUser!): userData
     updateUser(email: String, input: InputUser): userData
@@ -80,7 +90,7 @@ export default gql`
     deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
     linkedInMsg: JSON
-    getAllUsers(id: String): JSON
+    getAllUsers(id: String!): [allUsers!]!
   }
 
   input GenerateInput {
