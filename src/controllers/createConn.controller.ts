@@ -4,6 +4,7 @@ const Prompt = require('../models/prompt');
 const MessagePrompt = require('../models/mobilePrompt');
 const Email = require('../models/email');
 const Message = require('../models/messages');
+const SentEmails = require('../models/sentEmails');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
 import puppeteer from 'puppeteer';
@@ -239,13 +240,18 @@ export class CreateConnController {
       const randomSalutation = salutations[Math.floor(Math.random() * salutations.length)];
       for (let i = 0; i <= inputObject.input.length - 1; i++) {
         await transporter.sendMail({
-          from: process.env.FROM_EMAIL,
+          from: fromEmail,
           to: inputObject.input[i].toEmail,
           subject: allEmails.subject,
           text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + allEmails.body,
         });
+        await SentEmails.create({
+          toEmail: inputObject.input[i].toEmail,
+          fromEmail: inputObject.input[i].fromEmail,
+          toName: inputObject.input[i].name
+        });
       }
-      await Email.deleteMany({});
+      await Email.deleteMany({ emailLoggedInUser: fromEmail });
       return 'Email sent successfully';
     } catch (e) {
       throw new Error(`Error sending email`);
