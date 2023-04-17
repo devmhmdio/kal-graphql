@@ -5,6 +5,7 @@ const MessagePrompt = require('../models/mobilePrompt');
 const Email = require('../models/email');
 const Message = require('../models/messages');
 const SentEmails = require('../models/sentEmails');
+const SentMessages = require('../models/sentMessages');
 const Users = require('../models/users');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
@@ -261,7 +262,7 @@ export class CreateConnController {
 
   async sendMessage (inputObject: any) {
     try {
-      const { body, name, number } = inputObject.input[0];
+      const { body, name, number, fromEmail } = inputObject.input[0];
       const allEmails = {
         body,
         name,
@@ -281,7 +282,12 @@ export class CreateConnController {
       }).catch((e) => {
         throw new Error(`Error sending message`)
       });
-
+      await SentMessages.create({
+        toNumber: number,
+        fromEmail,
+        toName: name
+      });
+      await Message.deleteMany({});
       return 'Message sent successfully';
 
     } catch (e) {
@@ -316,6 +322,20 @@ export class CreateConnController {
       if (getCurrentUser.role === 'super admin') {
         const sentEmails = await SentEmails.find({});
         return sentEmails;
+      }
+      return 'Unauthorised access';
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async viewAllMessagesSent({ id }: any) {
+    try {
+      const getCurrentUser = await Users.findOne({ _id: id });
+      if (!getCurrentUser) 'Cannot find any such user';
+      if (getCurrentUser.role === 'super admin') {
+        const sentMessages = await SentMessages.find({});
+        return sentMessages;
       }
       return 'Unauthorised access';
     } catch (err) {

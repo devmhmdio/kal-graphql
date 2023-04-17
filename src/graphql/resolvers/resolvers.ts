@@ -87,7 +87,10 @@ const resolvers: IResolvers = {
     },
     viewAllEmailsSent: (_, inputObject, ctx: Context) => {
       return createConnController.viewAllEmailsSent(inputObject);
-    }
+    },
+    viewAllMessagesSent: (_, inputObject, ctx: Context) => {
+      return createConnController.viewAllMessagesSent(inputObject);
+    },
   },
 };
 

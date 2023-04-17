@@ -79,6 +79,12 @@ export default gql`
     fromEmail: String
   }
 
+  type sentMessages {
+    toNumber: String
+    toName: String
+    fromEmail: String
+  }
+
   type Mutation {
     addUser(input: InputUser!): userData
     updateUser(email: String, input: InputUser): userData
@@ -96,9 +102,9 @@ export default gql`
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
-    linkedInMsg: JSON
     getAllUsers(id: String!): [allUsers!]!
     viewAllEmailsSent(id: String!): [sentEmails!]!
+    viewAllMessagesSent(id: String!): [sentMessages!]!
   }
 
   input GenerateInput {
@@ -136,6 +142,7 @@ export default gql`
     body: String!
     name: String!
     number: String!
+    fromEmail: String!
   }
 
   input InputUser {
