@@ -73,6 +73,12 @@ export default gql`
     createdAt: String
   }
 
+  type sentEmails {
+    toEmail: String
+    toName: String
+    fromEmail: String
+  }
+
   type Mutation {
     addUser(input: InputUser!): userData
     updateUser(email: String, input: InputUser): userData
@@ -92,6 +98,7 @@ export default gql`
     returnToken(token: String): JSON
     linkedInMsg: JSON
     getAllUsers(id: String!): [allUsers!]!
+    viewAllEmailsSent(id: String!): [sentEmails!]!
   }
 
   input GenerateInput {

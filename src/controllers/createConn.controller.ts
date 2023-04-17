@@ -5,6 +5,7 @@ const MessagePrompt = require('../models/mobilePrompt');
 const Email = require('../models/email');
 const Message = require('../models/messages');
 const SentEmails = require('../models/sentEmails');
+const Users = require('../models/users');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
 import puppeteer from 'puppeteer';
@@ -308,41 +309,17 @@ export class CreateConnController {
     return successResponse({result, msgResult}, 'deleted');
   }
 
-  async linkedInMsg() {
-    let profileUrl = "https://www.linkedin.com/in/khadija-dh-b02428120/";
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
-    await page.goto('https://www.linkedin.com/login');
-    await page.setViewport({width: 1080, height: 1024});
-
-    // Login to LinkedIn
-    await page.type('#username', 'mohammedrafique23@gmail.com');
-    await page.type('#password', 'Mhmd@66426633');
-    await page.click('button[type="submit"]');
-
-    // Wait for the page to load and navigate to the LinkedIn search page
-    await page.waitForNavigation();
-    await page.goto(profileUrl);
-    await page.waitForTimeout(2000)
-
-    // Click on the message button
-    // const messageButtonSelector = 'div.entry-point';
-    // await page.waitForSelector(messageButtonSelector);
-    // await page.click(messageButtonSelector);
-    await page.waitForSelector('.artdeco-button__text');
-    await page.click('.artdeco-button__text');
-
-
-    await page.waitForSelector('.msg-form__subject-input');
-    await page.type('.msg-form__subject-input', 'YOUR_SUBJECT');
-    await page.type('.msg-form__contenteditable', 'YOUR_MESSAGE_BODY');
-    await page.click('.msg-form__send-button');
-
-
-    // Construct a personalized message to send to the person
-    const message = `Hi [Name], I came across your LinkedIn profile and would like to connect with you. [Add personalized message here]`;
-
-    // await browser.close();
-    return "Success";
+  async viewAllEmailsSent({ id }: any) {
+    try {
+      const getCurrentUser = await Users.findOne({ _id: id });
+      if (!getCurrentUser) 'Cannot find any such user';
+      if (getCurrentUser.role === 'super admin') {
+        const sentEmails = await SentEmails.find({});
+        return sentEmails;
+      }
+      return 'Unauthorised access';
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }

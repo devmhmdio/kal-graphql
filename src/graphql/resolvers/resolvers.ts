@@ -76,9 +76,6 @@ const resolvers: IResolvers = {
     returnToken: (_, inputObject, ctx: Context) => {
       return usersController.returnTokenData(inputObject);
     },
-    linkedInMsg: () => {
-      return createConnController.linkedInMsg();
-    },
     sendResetPasswordEmail: (_, inputObject, ctx: Context) => {
       return usersController.sendResetPasswordEmail(inputObject);
     },
@@ -88,6 +85,9 @@ const resolvers: IResolvers = {
     getAllUsers: (_, inputObject, ctx: Context) => {
       return usersController.getAllUsers(inputObject);
     },
+    viewAllEmailsSent: (_, inputObject, ctx: Context) => {
+      return createConnController.viewAllEmailsSent(inputObject);
+    }
   },
 };
 
