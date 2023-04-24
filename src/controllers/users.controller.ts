@@ -119,12 +119,16 @@ export class UsersController {
     }
   }
 
-  async getAllUsers({ id }: any) {
+  async getAllUsers({ id, regex }: any) {
     try {
       const getCurrentUser = await Users.findOne({ _id: id });
       if (!getCurrentUser) 'Cannot find any such user'
       if (getCurrentUser.role === 'super admin') {
         const users = await Users.find({});
+        return users;
+      }
+      if (getCurrentUser.role === 'company admin') {
+        const users = await Users.find({ email: { $regex: regex }});
         return users;
       }
       return 'Unauthorised access';

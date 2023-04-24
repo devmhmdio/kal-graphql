@@ -102,7 +102,7 @@ export default gql`
     saveChanges(input: JSON!): JSON
     deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
-    getAllUsers(id: String!): [allUsers!]!
+    getAllUsers(id: String!, regex: String): [allUsers!]!
     viewAllEmailsSent(id: String!): [sentEmails!]!
     viewAllMessagesSent(id: String!): [sentMessages!]!
   }
