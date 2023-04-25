@@ -8,6 +8,10 @@ const MessagePromptSchema = new mongoose.Schema(
     email: {
       type: String,
     },
+    locked: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
