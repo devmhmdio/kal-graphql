@@ -192,12 +192,18 @@ export class CreateConnController {
 
   async getPrompt({ email }) {
     const prompt = await Prompt.findOne({ email });
-    return prompt.question;
+    return {
+      status: prompt.locked,
+      question: prompt.question,
+    };
   }
 
   async getMessagePrompt({ email }) {
     const prompt = await MessagePrompt.findOne({ email });
-    return prompt.question;
+    return {
+      status: prompt.locked,
+      question: prompt.question,
+    };
   }
 
   async updatePrompt(inputObject: any, ctx: Context) {
