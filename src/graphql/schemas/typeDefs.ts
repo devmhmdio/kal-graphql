@@ -104,7 +104,7 @@ export default gql`
     returnToken(token: String): JSON
     getAllUsers(id: String!, regex: String): [allUsers!]!
     viewAllEmailsSent(id: String!): [sentEmails!]!
-    viewAllMessagesSent(id: String!): [sentMessages!]!
+    viewAllMessagesSent(id: String!, regex: String): [sentMessages!]!
   }
 
   input GenerateInput {
