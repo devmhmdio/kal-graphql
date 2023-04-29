@@ -13,6 +13,10 @@ const SentEmailsSchema = new mongoose.Schema(
     fromEmail: {
       type: String,
       required: true,
+    },
+    body: {
+      type: String,
+      required: true,
     }
   },
   {

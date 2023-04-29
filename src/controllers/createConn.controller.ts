@@ -256,7 +256,8 @@ export class CreateConnController {
         await SentEmails.create({
           toEmail: inputObject.input[i].toEmail,
           fromEmail: inputObject.input[i].fromEmail,
-          toName: inputObject.input[i].name
+          toName: inputObject.input[i].name,
+          body: allEmails.subject + '\n' + allEmails.body,
         });
       }
       await Email.deleteMany({ emailLoggedInUser: fromEmail });
@@ -291,7 +292,8 @@ export class CreateConnController {
       await SentMessages.create({
         toNumber: number,
         fromEmail,
-        toName: name
+        toName: name,
+        body: allEmails.body,
       });
       await Message.deleteMany({});
       return 'Message sent successfully';
