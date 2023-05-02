@@ -5,9 +5,11 @@ import * as jwt from 'jsonwebtoken';
 import { AppConstants } from '../../constants/app.constants';
 import { UsersController } from '../../controllers/users.controller';
 import { CreateConnController } from '../../controllers/createConn.controller';
+import { StripeController } from '../../controllers/stripe.controller';
 
 const usersController = new UsersController();
 const createConnController = new CreateConnController();
+const stripeController = new StripeController();
 
 const resolvers: IResolvers = {
   Query: {
@@ -90,6 +92,9 @@ const resolvers: IResolvers = {
     },
     viewAllMessagesSent: (_, inputObject, ctx: Context) => {
       return createConnController.viewAllMessagesSent(inputObject);
+    },
+    capturePayment: (_, inputObject, ctx: Context) => {
+      return stripeController.capturePayment(inputObject);
     },
   },
 };

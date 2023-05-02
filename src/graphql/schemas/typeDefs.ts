@@ -105,6 +105,7 @@ export default gql`
     getAllUsers(id: String!, regex: String): [allUsers!]!
     viewAllEmailsSent(id: String!, regex: String): [sentEmails!]!
     viewAllMessagesSent(id: String!, regex: String): [sentMessages!]!
+    capturePayment(amount: Int!, email: String!): JSON
   }
 
   input GenerateInput {

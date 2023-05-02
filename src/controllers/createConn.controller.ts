@@ -10,10 +10,7 @@ const Users = require('../models/users');
 import nodemailer from 'nodemailer';
 import { successResponse } from '../utils/successResponse';
 import puppeteer from 'puppeteer';
-const twilio = require('twilio')(
-  process.env.TWILIO_SID,
-  process.env.TWILIO_TOKEN
-);
+const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -77,8 +74,8 @@ export class CreateConnController {
         if (inputObject.input.emailId) {
           emailId = inputObject.input.emailId[i];
         }
-        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '');
-        if (emailBody.includes("Dear <name>,")) emailBody = emailBody.replace("Dear <name>,", '');
+        if (emailBody.includes('Dear <Name>,')) emailBody = emailBody.replace('Dear <Name>,', '');
+        if (emailBody.includes('Dear <name>,')) emailBody = emailBody.replace('Dear <name>,', '');
         responseToSend = {
           subject,
           body: emailBody,
@@ -89,6 +86,11 @@ export class CreateConnController {
         };
         responseToSendArray.push(responseToSend);
         await Email.create(responseToSend);
+        await Users.findOneAndUpdate(
+          { email: inputObject.input.emailLoggedInUser },
+          { $inc: { balance: -0.05 } },
+          { new: true, runValidators: true }
+        );
       }
       return responseToSendArray;
     } catch (e) {
@@ -109,7 +111,7 @@ export class CreateConnController {
       let name;
       let company;
       let csvName;
-      let number
+      let number;
       if (!configuration.apiKey) {
         throw new Error('Api key not found');
       }
@@ -152,8 +154,8 @@ export class CreateConnController {
         if (inputObject.input.number) {
           number = inputObject.input.number[i];
         }
-        if (emailBody.includes("Dear <Name>,")) emailBody = emailBody.replace("Dear <Name>,", '');
-        if (emailBody.includes("Dear <name>,")) emailBody = emailBody.replace("Dear <name>,", '');
+        if (emailBody.includes('Dear <Name>,')) emailBody = emailBody.replace('Dear <Name>,', '');
+        if (emailBody.includes('Dear <name>,')) emailBody = emailBody.replace('Dear <name>,', '');
         responseToSend = {
           body: emailBody,
           name,
@@ -163,6 +165,11 @@ export class CreateConnController {
         };
         responseToSendArray.push(responseToSend);
         await Message.create(responseToSend);
+        await Users.findOneAndUpdate(
+          { email: inputObject.input.emailLoggedInUser },
+          { $inc: { balance: -0.025 } },
+          { new: true, runValidators: true }
+        );
       }
       return responseToSendArray;
     } catch (e) {
@@ -267,7 +274,7 @@ export class CreateConnController {
     }
   }
 
-  async sendMessage (inputObject: any) {
+  async sendMessage(inputObject: any) {
     try {
       const { body, name, number, fromEmail } = inputObject.input[0];
       const allEmails = {
@@ -279,16 +286,19 @@ export class CreateConnController {
       const salutations = ['Dear', 'Hey', 'Hello', 'Hey there!'];
       const randomSalutation = salutations[Math.floor(Math.random() * salutations.length)];
 
-      twilio.messages.create({
-        to: number,
-        from: process.env.TWILIO_NUMBER,
-        body: randomSalutation + "\n" + allEmails.body
-      }).then(async (message) => {
-        await Message.deleteMany({});
-        console.log(message.sid);
-      }).catch((e) => {
-        throw new Error(`Error sending message`)
-      });
+      twilio.messages
+        .create({
+          to: number,
+          from: process.env.TWILIO_NUMBER,
+          body: randomSalutation + '\n' + allEmails.body,
+        })
+        .then(async (message) => {
+          await Message.deleteMany({});
+          console.log(message.sid);
+        })
+        .catch((e) => {
+          throw new Error(`Error sending message`);
+        });
       await SentMessages.create({
         toNumber: number,
         fromEmail,
@@ -297,9 +307,8 @@ export class CreateConnController {
       });
       await Message.deleteMany({});
       return 'Message sent successfully';
-
     } catch (e) {
-      throw new Error(e)
+      throw new Error(e);
     }
   }
 
@@ -320,7 +329,7 @@ export class CreateConnController {
   async deleteAllResponsesFromDB(inputObject) {
     const result = await Email.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
     const msgResult = await Message.deleteMany({ emailLoggedInUser: inputObject.loggedInUser });
-    return successResponse({result, msgResult}, 'deleted');
+    return successResponse({ result, msgResult }, 'deleted');
   }
 
   async viewAllEmailsSent({ id, regex }: any) {
@@ -332,7 +341,7 @@ export class CreateConnController {
         return sentEmails;
       }
       if (getCurrentUser.role === 'company admin') {
-        const sentEmails = await SentEmails.find({ email: { $regex: regex }});
+        const sentEmails = await SentEmails.find({ email: { $regex: regex } });
         return sentEmails;
       }
       return 'Unauthorised access';
@@ -350,7 +359,7 @@ export class CreateConnController {
         return sentMessages;
       }
       if (getCurrentUser.role === 'company admin') {
-        const sentMessages = await SentMessages.find({ fromEmail: { $regex: regex }});
+        const sentMessages = await SentMessages.find({ fromEmail: { $regex: regex } });
         return sentMessages;
       }
       return 'Unauthorised access';

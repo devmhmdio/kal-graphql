@@ -67,7 +67,11 @@ const UserSchema: Schema<IUserDocument> = new Schema(
     role: {
       type: String,
       default: 'member',
-    }
+    },
+    balance: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
