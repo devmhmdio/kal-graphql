@@ -78,6 +78,7 @@ export default gql`
     toEmail: String
     toName: String
     fromEmail: String
+    body: String
   }
 
   type sentMessages {
