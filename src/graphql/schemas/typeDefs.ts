@@ -85,6 +85,7 @@ export default gql`
     toNumber: String
     toName: String
     fromEmail: String
+    body: String
   }
 
   type Mutation {
