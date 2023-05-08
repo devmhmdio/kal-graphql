@@ -2,6 +2,7 @@ import { gql } from 'apollo-server';
 
 export default gql`
   scalar JSON
+  scalar Date
   type User {
     email: String
     name: String
@@ -70,7 +71,7 @@ export default gql`
     company: String
     position: String
     role: String
-    createdAt: String
+    createdAt: Date
   }
 
   type sentEmails {
