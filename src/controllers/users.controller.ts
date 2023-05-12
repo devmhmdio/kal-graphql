@@ -128,7 +128,7 @@ export class UsersController {
         return users;
       }
       if (getCurrentUser.role === 'company admin') {
-        const users = await Users.find({ email: { $regex: regex }});
+        const users = await Users.find({ company: getCurrentUser.company});
         return users;
       }
       return 'Unauthorised access';
