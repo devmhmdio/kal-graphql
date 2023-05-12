@@ -28,7 +28,7 @@ export class UsersController {
       if (!result) {
         throw new Error('Invalid email or password')
       }
-      const token = jwt.sign({ userId: result._id, email: result.email, name: result.name, phone: result.phone, app_password: result.app_password, company: result.company, position: result.position, balance: result.balance }, 'asdfghjkL007', { expiresIn: '1h' });
+      const token = jwt.sign({ userId: result._id, email: result.email, name: result.name, phone: result.phone, app_password: result.app_password, company: result.company, position: result.position, balance: result.balance, role: result.role }, 'asdfghjkL007', { expiresIn: '1h' });
       return {result, token};
     } catch (error) {
       return buildErrorResponse(error);
@@ -132,6 +132,15 @@ export class UsersController {
         return users;
       }
       return 'Unauthorised access';
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async getUserAsCompanyAdmin({ company, role }: any) {
+    try {
+      const getCompanyAdmin = await Users.find({ company, role });
+      return getCompanyAdmin;
     } catch (e) {
       throw new Error(e);
     }

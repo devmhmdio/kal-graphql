@@ -22,6 +22,7 @@ export default gql`
     getMsgs(loggedInEmail: String!): [msgsDataOutput]!
     getPrompt(email: String!): JSON
     getMessagePrompt(email: String!): JSON
+    getUserCompanyAdmin(company: String!, role: String!): JSON
   }
 
   input getUserInput {

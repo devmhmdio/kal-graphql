@@ -33,7 +33,10 @@ const resolvers: IResolvers = {
     },
     getMessagePrompt: (_: void, args: any, ctx: Context, _info: GraphQLResolveInfo) => {
       return createConnController.getMessagePrompt(args);
-    }
+    },
+    getUserCompanyAdmin: (_, inputObject, ctx: Context) => {
+      return usersController.getUserAsCompanyAdmin(inputObject);
+    },
   },
   Mutation: {
     addUser: (_, inputObject, ctx: Context) => {
