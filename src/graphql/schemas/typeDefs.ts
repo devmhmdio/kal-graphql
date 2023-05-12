@@ -157,6 +157,7 @@ export default gql`
     app_password: String
     company: String
     position: String
+    role: String
   }
 
   type Status {
