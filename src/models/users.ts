@@ -12,6 +12,7 @@ export interface IUserDocument extends Document {
   app_password: string;
   company: string;
   position: string;
+  balance: number;
   resetToken: string | null;
   resetTokenExpiration: Date | null;
   returnToken: () => string;
