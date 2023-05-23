@@ -93,7 +93,7 @@ export class UsersController {
 
   async deleteUser(inputObject: any, ctx: Context) {
     try {
-      const result = await Users.findOneAndDelete({ _id: inputObject.id });
+      const result = await Users.findOneAndDelete({ email: inputObject.email });
       return successResponse(result, 'deleted');
     } catch (error) {
       return buildErrorResponse(error);

@@ -96,7 +96,7 @@ export default gql`
     resetPassword(input: resetPassword): JSON
     createConnection(input: GenerateInput!): [createConnectionOutput]
     createConnectionForMessage(input: GenerateInputMessage!): [createConnectionOutput]
-    deleteUser(id: String): deleteUsersData
+    deleteUser(email: String): deleteUsersData
     addPrompt(question: String!, email: String!): JSON
     addMessagePrompt(question: String!, email: String!): JSON
     updatePrompt(question: String!, email: String!): JSON
