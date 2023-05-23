@@ -72,6 +72,7 @@ export default gql`
     company: String
     position: String
     role: String
+    balance: Int
     createdAt: Date
   }
 
