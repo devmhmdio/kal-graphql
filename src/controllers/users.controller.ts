@@ -34,6 +34,7 @@ export class UsersController {
       return buildErrorResponse(error);
     }
   }
+
   async updateUser(inputObject: any, ctx: Context) {
     try {
       for (const key in inputObject.input) {
@@ -43,12 +44,14 @@ export class UsersController {
       }
       const email = inputObject.input.email;
       delete inputObject.input.email;
-      const result = await Users.findOneAndUpdate({ email }, inputObject.input);
+      const result = await Users.findOneAndUpdate({ email }, inputObject.input, { new: true });
       if (result) {
         return successResponse(result, 'updated');
       }
+      console.log('No user found with email: ', email);
       return successResponse(result, 'notUpdated');
     } catch (error) {
+      console.error('Error when updating user: ', error);
       return buildErrorResponse(error);
     }
   }
