@@ -11,7 +11,7 @@ export class StripeController {
       });
       await Users.findOneAndUpdate(
         { email: email },
-        { $set: { balance: amount } },
+        { $inc: { balance: amount } },
         { new: true, runValidators: true }
       );
       return {
