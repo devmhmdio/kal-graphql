@@ -3,12 +3,18 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   // host: "smtp.gmail.com",
   host: "smtp.office365.com",
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.RESET_FROM_EMAIL,
     pass: process.env.RESET_FROM_PASSWORD,
   },
+  tls: {
+    ciphers: "SSLv3",
+    rejectUnauthorized: false,
+  },
+  logger: true,
+  debug: true,
 });
 
 export const sendResetPasswordEmail = (email, resetUrl) => {
