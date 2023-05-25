@@ -360,7 +360,7 @@ export class CreateConnController {
     return successResponse({ result, msgResult }, 'deleted');
   }
 
-  async viewAllEmailsSent({ id, regex }: any) {
+  async viewAllEmailsSent({ id, company }: any) {
     try {
       const getCurrentUser = await Users.findOne({ _id: id });
       if (!getCurrentUser) 'Cannot find any such user';
@@ -369,7 +369,7 @@ export class CreateConnController {
         return sentEmails;
       }
       if (getCurrentUser.role === 'company admin') {
-        const sentEmails = await SentEmails.find({ fromEmail: { $regex: regex } });
+        const sentEmails = await SentEmails.find({ company });
         return sentEmails;
       }
       return 'Unauthorised access';
@@ -378,7 +378,7 @@ export class CreateConnController {
     }
   }
 
-  async viewAllMessagesSent({ id, regex }: any) {
+  async viewAllMessagesSent({ id, company }: any) {
     try {
       const getCurrentUser = await Users.findOne({ _id: id });
       if (!getCurrentUser) 'Cannot find any such user';
@@ -387,7 +387,7 @@ export class CreateConnController {
         return sentMessages;
       }
       if (getCurrentUser.role === 'company admin') {
-        const sentMessages = await SentMessages.find({ fromEmail: { $regex: regex } });
+        const sentMessages = await SentMessages.find({ company });
         return sentMessages;
       }
       return 'Unauthorised access';

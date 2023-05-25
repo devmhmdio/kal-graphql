@@ -14,6 +14,10 @@ const SentEmailsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    company: {
+      type: String,
+      required: true,
+    },
     body: {
       type: String,
       required: true,

@@ -82,6 +82,7 @@ export default gql`
     toName: String
     fromEmail: String
     body: String
+    company: String
   }
 
   type sentMessages {
@@ -89,6 +90,7 @@ export default gql`
     toName: String
     fromEmail: String
     body: String
+    company: String
   }
 
   type Mutation {
@@ -109,8 +111,8 @@ export default gql`
     deleteAllResponsesFromDB(loggedInUser: String!): deleteUsersData
     returnToken(token: String): JSON
     getAllUsers(id: String!, regex: String): [allUsers!]!
-    viewAllEmailsSent(id: String!, regex: String): [sentEmails!]!
-    viewAllMessagesSent(id: String!, regex: String): [sentMessages!]!
+    viewAllEmailsSent(id: String!, company: String): [sentEmails!]!
+    viewAllMessagesSent(id: String!, company: String): [sentMessages!]!
     capturePayment(amount: Int!, email: String!, token: String!): JSON
   }
 
