@@ -369,7 +369,7 @@ export class CreateConnController {
         return sentEmails;
       }
       if (getCurrentUser.role === 'company admin') {
-        const sentEmails = await SentEmails.find({ email: { $regex: regex } });
+        const sentEmails = await SentEmails.find({ fromEmail: { $regex: regex } });
         return sentEmails;
       }
       return 'Unauthorised access';
