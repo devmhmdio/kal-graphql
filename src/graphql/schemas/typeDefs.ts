@@ -145,6 +145,7 @@ export default gql`
     toEmail: String!
     fromEmail: String!
     app_password: String!
+    company: String
   }
 
   input sendMessage {
@@ -152,6 +153,7 @@ export default gql`
     name: String!
     number: String!
     fromEmail: String!
+    company: String
   }
 
   input InputUser {

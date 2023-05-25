@@ -263,7 +263,7 @@ export class CreateConnController {
 
   async sendEmail(inputObject: any) {
     try {
-      const { subject, body, name, toEmail, fromEmail, app_password } = inputObject.input[0];
+      const { subject, body, name, toEmail, fromEmail, app_password, company } = inputObject.input[0];
       const allEmails = {
         subject,
         body,
@@ -293,6 +293,7 @@ export class CreateConnController {
           fromEmail: inputObject.input[i].fromEmail,
           toName: inputObject.input[i].name,
           body: allEmails.subject + '\n' + allEmails.body,
+          company,
         });
       }
       await Email.deleteMany({ emailLoggedInUser: fromEmail });
@@ -304,7 +305,7 @@ export class CreateConnController {
 
   async sendMessage(inputObject: any) {
     try {
-      const { body, name, number, fromEmail } = inputObject.input[0];
+      const { body, name, number, fromEmail, company } = inputObject.input[0];
       const allEmails = {
         body,
         name,
@@ -332,6 +333,7 @@ export class CreateConnController {
         fromEmail,
         toName: name,
         body: allEmails.body,
+        company,
       });
       await Message.deleteMany({});
       return 'Message sent successfully';
