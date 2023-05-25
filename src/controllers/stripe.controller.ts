@@ -1,4 +1,6 @@
-const stripe = require('stripe')('sk_test_IgWOZDfCQqQtoH7Y3z0k0cB900qJBhH0zd');
+import dotenv from 'dotenv';
+dotenv.config();
+const stripe = require('stripe')(process.env.STRIPE_LIVE_SECRET_KEY);
 const Users = require('../models/users');
 
 export class StripeController {
