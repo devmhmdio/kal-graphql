@@ -37,6 +37,9 @@ const resolvers: IResolvers = {
     getUserCompanyAdmin: (_, inputObject, ctx: Context) => {
       return usersController.getUserAsCompanyAdmin(inputObject);
     },
+    getUserBalance: (_, inputObject, ctx: Context) => {
+      return usersController.getUserBalance(inputObject);
+    },
   },
   Mutation: {
     addUser: (_, inputObject, ctx: Context) => {

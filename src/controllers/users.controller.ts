@@ -26,10 +26,24 @@ export class UsersController {
     try {
       const result = await Users.findOne({ email: args.input.email, password: args.input.password });
       if (!result) {
-        throw new Error('Invalid email or password')
+        throw new Error('Invalid email or password');
       }
-      const token = jwt.sign({ userId: result._id, email: result.email, name: result.name, phone: result.phone, app_password: result.app_password, company: result.company, position: result.position, balance: result.balance, role: result.role }, 'asdfghjkL007', { expiresIn: '24h' });
-      return {result, token};
+      const token = jwt.sign(
+        {
+          userId: result._id,
+          email: result.email,
+          name: result.name,
+          phone: result.phone,
+          app_password: result.app_password,
+          company: result.company,
+          position: result.position,
+          balance: result.balance,
+          role: result.role,
+        },
+        'asdfghjkL007',
+        { expiresIn: '24h' }
+      );
+      return { result, token };
     } catch (error) {
       return buildErrorResponse(error);
     }
@@ -69,7 +83,7 @@ export class UsersController {
       // const resetUrl = `http://localhost:3000/reset-password?${resetToken}`;
       const resetUrl = `http://app.traifecta.com/reset-password?${resetToken}`;
       sendResetPasswordEmail(inputObject.email, resetUrl);
-      return "Mail sent";
+      return 'Mail sent';
     } catch (error) {
       return buildErrorResponse(error);
     }
@@ -82,15 +96,15 @@ export class UsersController {
 
       const user = await Users.findOne({ resetToken });
       if (!user) {
-        return "Invalid reset token";
+        return 'Invalid reset token';
       }
       // Update user password
       user.password = password;
       user.resetToken = null;
       await user.save();
-      return "Password reset successful";
+      return 'Password reset successful';
     } catch (e) {
-      return buildErrorResponse(e)
+      return buildErrorResponse(e);
     }
   }
 
@@ -115,23 +129,23 @@ export class UsersController {
   async returnTokenData(inputObject: any) {
     try {
       const token = inputObject.token;
-      const decodedToken = jwt.verify(token, "asdfghjkL007")
-      return decodedToken
+      const decodedToken = jwt.verify(token, 'asdfghjkL007');
+      return decodedToken;
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
   async getAllUsers({ id, regex }: any) {
     try {
       const getCurrentUser = await Users.findOne({ _id: id });
-      if (!getCurrentUser) 'Cannot find any such user'
+      if (!getCurrentUser) 'Cannot find any such user';
       if (getCurrentUser.role === 'super admin') {
         const users = await Users.find({});
         return users;
       }
       if (getCurrentUser.role === 'company admin') {
-        const users = await Users.find({ company: getCurrentUser.company});
+        const users = await Users.find({ company: getCurrentUser.company });
         return users;
       }
       return 'Unauthorised access';
@@ -144,6 +158,28 @@ export class UsersController {
     try {
       const getCompanyAdmin = await Users.find({ company, role });
       return getCompanyAdmin;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  async getUserBalance({ email, company, role }) {
+    try {
+      let query;
+
+      if (role === 'member') {
+        query = { company, role: 'company admin' };
+      } else {
+        query = { email };
+      }
+
+      const user = await Users.findOne(query);
+
+      if (!user) {
+        throw new Error('No user found');
+      }
+
+      return user.balance;
     } catch (e) {
       throw new Error(e);
     }
