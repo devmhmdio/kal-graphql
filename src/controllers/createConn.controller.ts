@@ -86,25 +86,6 @@ export class CreateConnController {
         };
         responseToSendArray.push(responseToSend);
         await Email.create(responseToSend);
-        const checkUserRole = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
-        if (checkUserRole.role === 'company admin')
-          await Users.updateOne(
-            { email: inputObject.input.emailLoggedInUser },
-            { $inc: { balance: -0.05 } },
-            { new: true, runValidators: true }
-          );
-        if (checkUserRole.role === 'member') {
-          const findCompanyAdmin = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
-          const getCompanyAdmin = await Users.findOne({
-            company: findCompanyAdmin.company,
-            role: 'company admin',
-          });
-          await Users.updateOne(
-            { email: getCompanyAdmin.email },
-            { $inc: { balance: -0.05 } },
-            { new: true, runValidators: true }
-          );
-        }
       }
       return responseToSendArray;
     } catch (e) {
@@ -179,25 +160,6 @@ export class CreateConnController {
         };
         responseToSendArray.push(responseToSend);
         await Message.create(responseToSend);
-        const checkUserRole = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
-        if (checkUserRole.role === 'company admin')
-          await Users.updateOne(
-            { email: inputObject.input.emailLoggedInUser },
-            { $inc: { balance: -0.025 } },
-            { new: true, runValidators: true }
-          );
-        if (checkUserRole.role === 'member') {
-          const findCompanyAdmin = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
-          const getCompanyAdmin = await Users.findOne({
-            company: findCompanyAdmin.company,
-            role: 'company admin',
-          });
-          await Users.updateOne(
-            { email: getCompanyAdmin.email },
-            { $inc: { balance: -0.025 } },
-            { new: true, runValidators: true }
-          );
-        }
       }
       return responseToSendArray;
     } catch (e) {
@@ -288,6 +250,25 @@ export class CreateConnController {
           subject: allEmails.subject,
           text: randomSalutation + ' ' + inputObject.input[i].name + '\n' + allEmails.body,
         });
+        const checkUserRole = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
+        if (checkUserRole.role === 'company admin')
+          await Users.updateOne(
+            { email: inputObject.input.emailLoggedInUser },
+            { $inc: { balance: -0.05 } },
+            { new: true, runValidators: true }
+          );
+        if (checkUserRole.role === 'member') {
+          const findCompanyAdmin = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
+          const getCompanyAdmin = await Users.findOne({
+            company: findCompanyAdmin.company,
+            role: 'company admin',
+          });
+          await Users.updateOne(
+            { email: getCompanyAdmin.email },
+            { $inc: { balance: -0.05 } },
+            { new: true, runValidators: true }
+          );
+        }
         await SentEmails.create({
           toEmail: inputObject.input[i].toEmail,
           fromEmail: inputObject.input[i].fromEmail,
@@ -335,6 +316,25 @@ export class CreateConnController {
         body: allEmails.body,
         company,
       });
+      const checkUserRole = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
+      if (checkUserRole.role === 'company admin')
+        await Users.updateOne(
+          { email: inputObject.input.emailLoggedInUser },
+          { $inc: { balance: -0.025 } },
+          { new: true, runValidators: true }
+        );
+      if (checkUserRole.role === 'member') {
+        const findCompanyAdmin = await Users.findOne({ email: inputObject.input.emailLoggedInUser });
+        const getCompanyAdmin = await Users.findOne({
+          company: findCompanyAdmin.company,
+          role: 'company admin',
+        });
+        await Users.updateOne(
+          { email: getCompanyAdmin.email },
+          { $inc: { balance: -0.025 } },
+          { new: true, runValidators: true }
+        );
+      }
       await Message.deleteMany({});
       return 'Message sent successfully';
     } catch (e) {
