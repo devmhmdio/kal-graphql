@@ -23,7 +23,7 @@ export default gql`
     getPrompt(email: String!): JSON
     getMessagePrompt(email: String!): JSON
     getUserCompanyAdmin(company: String!, role: String!): JSON
-    getUserBalance(email: String!, company: String!, role: String!): Int!
+    getUserBalance(email: String!, company: String!, role: String!): JSON
   }
 
   input getUserInput {
